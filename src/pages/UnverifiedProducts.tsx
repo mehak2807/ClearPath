@@ -1,5 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { useEffect } from "react";
 import {
   Building2,
   Package,
@@ -13,7 +14,14 @@ import { batches } from "@/data/mockData";
 const UnverifiedProducts = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const selectedCompany = location.state?.company || "Unknown Company";
+  const selectedCompany = location.state?.company;
+
+  // Redirect to company selection if no company is selected
+  useEffect(() => {
+    if (!selectedCompany) {
+      navigate("/verified-actor-dashboard", { replace: true });
+    }
+  }, [selectedCompany, navigate]);
 
   // Filter batches to show only non-verified products
   const unverifiedBatches = batches.filter(
@@ -24,12 +32,22 @@ const UnverifiedProducts = () => {
     navigate("/erp");
   };
 
+  const handleViewDetails = (batchId: string) => {
+    // TODO: Navigate to batch details page or open modal
+    console.log("View details for batch:", batchId);
+  };
+
   const statusColors: Record<string, string> = {
     Harvested: "bg-yellow-500/15 text-yellow-600 border-yellow-500/30",
     "In-Transit": "bg-blue-500/15 text-blue-600 border-blue-500/30",
     Processed: "bg-purple-500/15 text-purple-600 border-purple-500/30",
     Delivered: "bg-green-500/15 text-green-600 border-green-500/30",
   };
+
+  // If no company selected, return null (useEffect will handle redirect)
+  if (!selectedCompany) {
+    return null;
+  }
 
   return (
     <div className="space-y-6 max-w-7xl mx-auto">
@@ -76,7 +94,7 @@ const UnverifiedProducts = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.05 }}
             whileHover={{ scale: 1.02 }}
-            className="bg-card rounded-xl border border-border p-5 space-y-4 hover:shadow-lg transition-all cursor-pointer"
+            className="bg-card rounded-xl border border-border p-5 space-y-4 hover:shadow-lg transition-all"
           >
             {/* Product Header */}
             <div className="space-y-2">
@@ -115,7 +133,10 @@ const UnverifiedProducts = () => {
                 <span className="text-muted-foreground">
                   Journey Steps: {batch.journey.length}
                 </span>
-                <button className="flex items-center gap-1 text-accent hover:text-accent/80 font-medium transition-colors">
+                <button
+                  onClick={() => handleViewDetails(batch.id)}
+                  className="flex items-center gap-1 text-accent hover:text-accent/80 font-medium transition-colors"
+                >
                   <Eye className="w-4 h-4" />
                   <span>View Details</span>
                 </button>

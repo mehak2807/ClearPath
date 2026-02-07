@@ -38,7 +38,8 @@ describe("AppSidebar Navigation Filtering", () => {
   it("should show ERP Connect for actor role", () => {
     renderWithProviders(<AppSidebar />, "actor");
     
-    // Actor role should see ERP Connect and Settings
+    // Actor role should see My Companies, ERP Connect and Settings
+    expect(screen.getByText("My Companies")).toBeInTheDocument();
     expect(screen.getByText("ERP Connect")).toBeInTheDocument();
     expect(screen.getByText("Settings")).toBeInTheDocument();
     

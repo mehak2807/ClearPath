@@ -12,17 +12,9 @@ import {
   Phone,
   FileText,
 } from "lucide-react";
+import { companies } from "@/data/companies";
 
 type CompanyStep = "company" | "admin" | "verification" | "complete";
-
-const companies = [
-  { name: "Nestlé S.A.", industry: "Food & Beverage Manufacturing" },
-  { name: "Unilever PLC", industry: "Consumer Goods" },
-  { name: "Procter & Gamble", industry: "Consumer Products" },
-  { name: "Coca-Cola Company", industry: "Beverage Industry" },
-  { name: "PepsiCo Inc.", industry: "Food & Beverage" },
-  { name: "Mondelez International", industry: "Snack Foods" },
-];
 
 const CompanyOnboarding = () => {
   const navigate = useNavigate();
