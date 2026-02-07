@@ -13,6 +13,7 @@ import SettingsPage from "./pages/SettingsPage";
 import HomePage from "./pages/HomePage";
 import NotFound from "./pages/NotFound";
 import VerifiedActorOnboarding from "./pages/VerifiedActorOnboarding";
+import CompanyOnboarding from "./pages/CompanyOnboarding";
 
 const queryClient = new QueryClient();
 
@@ -36,6 +37,7 @@ const App = () => (
             <Route path="/verify" element={<QRVerify />} />
             <Route path="/settings" element={<SettingsPage />} />
             <Route path="/verified-actor-onboarding" element={<VerifiedActorOnboarding />} />
+            <Route path="/company-onboarding" element={<CompanyOnboarding />} />
           </Route>
           
           <Route path="*" element={<NotFound />} />
