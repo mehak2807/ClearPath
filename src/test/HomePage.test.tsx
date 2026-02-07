@@ -49,10 +49,10 @@ describe("HomePage", () => {
       screen.getByText(/Scan QR codes to verify product authenticity/)
     ).toBeInTheDocument();
     expect(
-      screen.getByText(/Manage your verified identity and participate/)
+      screen.getByText(/Connect your ERP system and seal supply chain data/)
     ).toBeInTheDocument();
     expect(
-      screen.getByText(/Access ERP integration, inventory management/)
+      screen.getByText(/View all verified supply chain participants/)
     ).toBeInTheDocument();
     expect(screen.getByText("Enter as Consumer")).toBeInTheDocument();
     expect(screen.getByText("Enter as Actor")).toBeInTheDocument();

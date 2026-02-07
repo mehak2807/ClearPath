@@ -28,9 +28,9 @@ const roleCards: RoleCard[] = [
   },
   {
     title: "Verified Actor",
-    description: "Manage your verified identity and participate in the supply chain",
+    description: "Connect your ERP system and seal supply chain data into ClearPath ledger",
     icon: ShieldCheck,
-    path: "/actors",
+    path: "/erp",
     role: "actor",
     buttonText: "Enter as Actor",
     colorClass: "text-cp-verified",
@@ -38,9 +38,9 @@ const roleCards: RoleCard[] = [
   },
   {
     title: "Company",
-    description: "Access ERP integration, inventory management, and dashboard analytics",
+    description: "View all verified supply chain participants and their identities",
     icon: Building2,
-    path: "/dashboard",
+    path: "/actors",
     role: "company",
     buttonText: "Enter as Company",
     colorClass: "text-accent",
