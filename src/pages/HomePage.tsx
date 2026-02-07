@@ -40,7 +40,7 @@ const roleCards: RoleCard[] = [
     title: "Company",
     description: "View all verified supply chain participants and their identities",
     icon: Building2,
-    path: "/actors",
+    path: "/company-onboarding",
     role: "company",
     buttonText: "Enter as Company",
     colorClass: "text-accent",
