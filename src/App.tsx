@@ -12,6 +12,7 @@ import QRVerify from "./pages/QRVerify";
 import SettingsPage from "./pages/SettingsPage";
 import HomePage from "./pages/HomePage";
 import NotFound from "./pages/NotFound";
+import VerifiedActorOnboarding from "./pages/VerifiedActorOnboarding";
 
 const queryClient = new QueryClient();
 
@@ -34,6 +35,7 @@ const App = () => (
             <Route path="/erp" element={<ERPConnect />} />
             <Route path="/verify" element={<QRVerify />} />
             <Route path="/settings" element={<SettingsPage />} />
+            <Route path="/verified-actor-onboarding" element={<VerifiedActorOnboarding />} />
           </Route>
           
           <Route path="*" element={<NotFound />} />
