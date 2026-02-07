@@ -441,7 +441,7 @@ const VerifiedActorOnboarding = () => {
                   transition={{ delay: 0.4 }}
                   className="text-muted-foreground"
                 >
-                  Welcome to the ClearPath verified actors network
+                  You are now a verified actor in the ClearPath supply chain network
                 </motion.p>
               </motion.div>
 
@@ -527,9 +527,9 @@ const VerifiedActorOnboarding = () => {
                 </h3>
                 <div className="space-y-3">
                   {[
-                    "Connect ERP system",
-                    "View digital identity",
-                    "Join verified actors network",
+                    "Connect your ERP system to start sealing supply chain data",
+                    "View your digital identity and cryptographic credentials",
+                    "Join the verified actors network and start collaborating",
                   ].map((step, index) => (
                     <motion.div
                       key={step}
@@ -538,9 +538,7 @@ const VerifiedActorOnboarding = () => {
                       transition={{ delay: 1.2 + index * 0.1 }}
                       className="flex items-center space-x-3"
                     >
-                      <div className="w-5 h-5 rounded-full border-2 border-primary flex items-center justify-center">
-                        <div className="w-2 h-2 rounded-full bg-primary" />
-                      </div>
+                      <CheckCircle2 className="w-5 h-5 text-cp-verified flex-shrink-0" />
                       <span className="text-sm text-foreground">{step}</span>
                     </motion.div>
                   ))}
@@ -554,10 +552,10 @@ const VerifiedActorOnboarding = () => {
                 transition={{ delay: 1.5 }}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                onClick={() => navigate("/dashboard")}
+                onClick={() => navigate("/erp")}
                 className="w-full py-3 px-4 rounded-lg bg-primary text-primary-foreground font-medium hover:opacity-90 transition-opacity flex items-center justify-center space-x-2"
               >
-                <span>Go to Dashboard</span>
+                <span>Go to ERP Connect</span>
                 <ArrowRight className="w-4 h-4" />
               </motion.button>
             </motion.div>

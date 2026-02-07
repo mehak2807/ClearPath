@@ -30,7 +30,7 @@ const roleCards: RoleCard[] = [
     title: "Verified Actor",
     description: "Connect your ERP system and seal supply chain data into ClearPath ledger",
     icon: ShieldCheck,
-    path: "/erp",
+    path: "/verified-actor-onboarding",
     role: "actor",
     buttonText: "Enter as Actor",
     colorClass: "text-cp-verified",
