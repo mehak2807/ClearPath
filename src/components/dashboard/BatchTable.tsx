@@ -1,8 +1,10 @@
-import { Eye, Download } from "lucide-react";
+import { Eye, Download, QrCode } from "lucide-react";
 import { Batch } from "@/data/mockData";
 import { motion } from "framer-motion";
 import { generateJourneyPDF } from "@/utils/generateJourneyPDF";
 import { useToast } from "@/hooks/use-toast";
+import { useState } from "react";
+import QRCodeModal from "./QRCodeModal";
 
 interface BatchTableProps {
   batches: Batch[];
@@ -19,6 +21,7 @@ const statusStyles: Record<string, string> = {
 
 const BatchTable = ({ batches, onViewBatch }: BatchTableProps) => {
   const { toast } = useToast();
+  const [qrBatch, setQrBatch] = useState<Batch | null>(null);
   
   const handleDownloadPDF = (batch: Batch) => {
     generateJourneyPDF(batch);
@@ -27,6 +30,14 @@ const BatchTable = ({ batches, onViewBatch }: BatchTableProps) => {
       description: `Journey report for ${batch.productName} has been downloaded.`,
       duration: 3000,
     });
+  };
+
+  const handleQRClick = (batch: Batch) => {
+    setQrBatch(batch);
+  };
+
+  const closeQRModal = () => {
+    setQrBatch(null);
   };
   
   return (
@@ -50,6 +61,7 @@ const BatchTable = ({ batches, onViewBatch }: BatchTableProps) => {
               <th className="text-left px-5 py-3 text-xs font-medium text-muted-foreground uppercase tracking-wider">Product</th>
               <th className="text-left px-5 py-3 text-xs font-medium text-muted-foreground uppercase tracking-wider">Origin</th>
               <th className="text-left px-5 py-3 text-xs font-medium text-muted-foreground uppercase tracking-wider">Status</th>
+              <th className="text-left px-5 py-3 text-xs font-medium text-muted-foreground uppercase tracking-wider">QR Code</th>
               <th className="text-left px-5 py-3 text-xs font-medium text-muted-foreground uppercase tracking-wider">Last Updated</th>
               <th className="text-right px-5 py-3 text-xs font-medium text-muted-foreground uppercase tracking-wider">Actions</th>
             </tr>
@@ -72,6 +84,19 @@ const BatchTable = ({ batches, onViewBatch }: BatchTableProps) => {
                   <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${statusStyles[batch.status] || ""}`}>
                     {batch.status}
                   </span>
+                </td>
+                <td className="px-5 py-3.5">
+                  {batch.status === "Verified" ? (
+                    <button
+                      onClick={() => handleQRClick(batch)}
+                      className="p-2 rounded-lg hover:bg-primary/10 transition-colors text-muted-foreground hover:text-primary"
+                      title="View QR Code"
+                    >
+                      <QrCode className="w-4 h-4" />
+                    </button>
+                  ) : (
+                    <span className="text-muted-foreground/30">—</span>
+                  )}
                 </td>
                 <td className="px-5 py-3.5 text-sm text-muted-foreground">{batch.lastUpdated}</td>
                 <td className="px-5 py-3.5">
@@ -97,6 +122,7 @@ const BatchTable = ({ batches, onViewBatch }: BatchTableProps) => {
           </tbody>
         </table>
       </div>
+      <QRCodeModal batch={qrBatch} onClose={closeQRModal} />
     </motion.div>
   );
 };
