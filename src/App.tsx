@@ -10,6 +10,7 @@ import Actors from "./pages/Actors";
 import ERPConnect from "./pages/ERPConnect";
 import QRVerify from "./pages/QRVerify";
 import SettingsPage from "./pages/SettingsPage";
+import HomePage from "./pages/HomePage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -23,6 +24,7 @@ const App = () => (
         <Routes>
           <Route element={<DashboardLayout />}>
             <Route path="/" element={<Index />} />
+            <Route path="/home" element={<HomePage />} />
             <Route path="/inventory" element={<Inventory />} />
             <Route path="/actors" element={<Actors />} />
             <Route path="/erp" element={<ERPConnect />} />
