@@ -1,6 +1,8 @@
 import { Eye, Download } from "lucide-react";
 import { Batch } from "@/data/mockData";
 import { motion } from "framer-motion";
+import { generateJourneyPDF } from "@/utils/generateJourneyPDF";
+import { useToast } from "@/hooks/use-toast";
 
 interface BatchTableProps {
   batches: Batch[];
@@ -16,6 +18,17 @@ const statusStyles: Record<string, string> = {
 };
 
 const BatchTable = ({ batches, onViewBatch }: BatchTableProps) => {
+  const { toast } = useToast();
+  
+  const handleDownloadPDF = (batch: Batch) => {
+    generateJourneyPDF(batch);
+    toast({
+      title: "PDF Generated",
+      description: `Journey report for ${batch.productName} has been downloaded.`,
+      duration: 3000,
+    });
+  };
+  
   return (
     <motion.div
       initial={{ opacity: 0, y: 16 }}
@@ -64,8 +77,9 @@ const BatchTable = ({ batches, onViewBatch }: BatchTableProps) => {
                 <td className="px-5 py-3.5">
                   <div className="flex items-center justify-end gap-1">
                     <button
+                      onClick={() => handleDownloadPDF(batch)}
                       className="p-2 rounded-lg hover:bg-muted transition-colors text-muted-foreground hover:text-foreground"
-                      title="Download Audit Report"
+                      title="Download Journey PDF"
                     >
                       <Download className="w-4 h-4" />
                     </button>
