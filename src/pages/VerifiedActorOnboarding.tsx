@@ -15,13 +15,16 @@ import {
 
 type Step = "phone" | "otp" | "identity" | "complete";
 
+const DEFAULT_COUNTRY_CODE = "+91 ";
+const OTP_LENGTH = 6;
+
 const VerifiedActorOnboarding = () => {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState<Step>("phone");
-  const [phoneNumber, setPhoneNumber] = useState("+91 ");
+  const [phoneNumber, setPhoneNumber] = useState(DEFAULT_COUNTRY_CODE);
   const [isSendingOtp, setIsSendingOtp] = useState(false);
   const [otpSent, setOtpSent] = useState(false);
-  const [otp, setOtp] = useState(['', '', '', '', '', '']);
+  const [otp, setOtp] = useState(Array(OTP_LENGTH).fill(''));
   const [isVerifyingOtp, setIsVerifyingOtp] = useState(false);
   const [otpVerified, setOtpVerified] = useState(false);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
@@ -46,12 +49,12 @@ const VerifiedActorOnboarding = () => {
       setOtp(newOtp);
       
       // Auto-focus next input
-      if (value && index < 5) {
+      if (value && index < OTP_LENGTH - 1) {
         document.getElementById(`otp-${index + 1}`)?.focus();
       }
       
-      // Auto-submit when all 6 digits entered
-      if (index === 5 && value && newOtp.every(digit => digit !== '')) {
+      // Auto-submit when all digits entered
+      if (index === OTP_LENGTH - 1 && value && newOtp.every(digit => digit !== '')) {
         handleVerifyOtp();
       }
     }
@@ -73,7 +76,7 @@ const VerifiedActorOnboarding = () => {
   };
 
   const handleResendOtp = () => {
-    setOtp(['', '', '', '', '', '']);
+    setOtp(Array(OTP_LENGTH).fill(''));
     setOtpSent(false);
     setOtpVerified(false);
     handleSendOtp();
@@ -258,7 +261,7 @@ const VerifiedActorOnboarding = () => {
                   {!isSendingOtp ? (
                     <button
                       onClick={handleSendOtp}
-                      disabled={!phoneNumber || phoneNumber === "+91 "}
+                      disabled={!phoneNumber || phoneNumber === DEFAULT_COUNTRY_CODE}
                       className="w-full py-3 px-4 rounded-lg bg-primary text-primary-foreground font-medium hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       Send OTP
