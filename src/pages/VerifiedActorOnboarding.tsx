@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Phone,
@@ -14,8 +15,8 @@ import {
   ShieldCheck,
 } from "lucide-react";
 
-// Mock actor data
-const actorData = {
+// Mock actor data - used as placeholder for demonstration
+const MOCK_ACTOR_DATA = {
   id: "ACT-101",
   name: "Your Organization",
   role: "Verified Actor",
@@ -27,6 +28,7 @@ const actorData = {
 type Step = "phone" | "identity" | "complete";
 
 const VerifiedActorOnboarding = () => {
+  const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState<Step>("phone");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [isVerifyingPhone, setIsVerifyingPhone] = useState(false);
@@ -35,6 +37,7 @@ const VerifiedActorOnboarding = () => {
   const [isVerifyingIdentity, setIsVerifyingIdentity] = useState(false);
   const [identityVerified, setIdentityVerified] = useState(false);
   const [verificationProgress, setVerificationProgress] = useState(0);
+  const progressIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   const handlePhoneVerification = async () => {
     setIsVerifyingPhone(true);
@@ -65,10 +68,9 @@ const VerifiedActorOnboarding = () => {
     setVerificationProgress(0);
 
     // Animate progress bar
-    const interval = setInterval(() => {
+    progressIntervalRef.current = setInterval(() => {
       setVerificationProgress((prev) => {
         if (prev >= 100) {
-          clearInterval(interval);
           return 100;
         }
         return prev + 2;
@@ -76,13 +78,25 @@ const VerifiedActorOnboarding = () => {
     }, 60);
 
     await new Promise((r) => setTimeout(r, 3000));
-    clearInterval(interval);
+    if (progressIntervalRef.current) {
+      clearInterval(progressIntervalRef.current);
+      progressIntervalRef.current = null;
+    }
     setVerificationProgress(100);
     setIsVerifyingIdentity(false);
     setIdentityVerified(true);
     await new Promise((r) => setTimeout(r, 1000));
     setCurrentStep("complete");
   };
+
+  // Cleanup interval on unmount
+  useEffect(() => {
+    return () => {
+      if (progressIntervalRef.current) {
+        clearInterval(progressIntervalRef.current);
+      }
+    };
+  }, []);
 
   const formatFileSize = (bytes: number) => {
     if (bytes < 1024) return bytes + " B";
@@ -455,7 +469,7 @@ const VerifiedActorOnboarding = () => {
                       className="flex items-center space-x-2 mb-1"
                     >
                       <h3 className="text-xl font-semibold text-foreground">
-                        {actorData.name}
+                        {MOCK_ACTOR_DATA.name}
                       </h3>
                       <motion.div
                         initial={{ scale: 0 }}
@@ -471,7 +485,7 @@ const VerifiedActorOnboarding = () => {
                       transition={{ delay: 0.9 }}
                       className="text-sm text-muted-foreground"
                     >
-                      {actorData.role}
+                      {MOCK_ACTOR_DATA.role}
                     </motion.p>
                   </div>
                 </div>
@@ -485,17 +499,17 @@ const VerifiedActorOnboarding = () => {
                   <div className="flex items-center space-x-3 text-sm">
                     <Building2 className="w-4 h-4 text-muted-foreground" />
                     <span className="text-foreground">
-                      {actorData.organization}
+                      {MOCK_ACTOR_DATA.organization}
                     </span>
                   </div>
                   <div className="flex items-center space-x-3 text-sm">
                     <MapPin className="w-4 h-4 text-muted-foreground" />
-                    <span className="text-foreground">{actorData.location}</span>
+                    <span className="text-foreground">{MOCK_ACTOR_DATA.location}</span>
                   </div>
                   <div className="flex items-center space-x-3 text-sm">
                     <BadgeCheck className="w-4 h-4 text-cp-verified" />
                     <span className="text-foreground">
-                      Actor ID: {actorData.id}
+                      Actor ID: {MOCK_ACTOR_DATA.id}
                     </span>
                   </div>
                 </motion.div>
@@ -540,7 +554,7 @@ const VerifiedActorOnboarding = () => {
                 transition={{ delay: 1.5 }}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                onClick={() => (window.location.href = "/dashboard")}
+                onClick={() => navigate("/dashboard")}
                 className="w-full py-3 px-4 rounded-lg bg-primary text-primary-foreground font-medium hover:opacity-90 transition-opacity flex items-center justify-center space-x-2"
               >
                 <span>Go to Dashboard</span>
