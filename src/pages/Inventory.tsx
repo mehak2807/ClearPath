@@ -1,22 +1,20 @@
 import { useState } from "react";
-import StatCards from "@/components/dashboard/StatCards";
 import BatchTable from "@/components/dashboard/BatchTable";
 import JourneyModal from "@/components/dashboard/JourneyModal";
 import { batches, Batch } from "@/data/mockData";
 
-const Index = () => {
+const Inventory = () => {
   const [selectedBatch, setSelectedBatch] = useState<Batch | null>(null);
 
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-foreground">Dashboard</h1>
+        <h1 className="text-2xl font-bold text-foreground">Inventory</h1>
         <p className="text-sm text-muted-foreground mt-0.5">
-          Monitor your supply chain in real time
+          Full batch registry with journey tracking
         </p>
       </div>
 
-      <StatCards />
       <BatchTable batches={batches} onViewBatch={setSelectedBatch} />
 
       {selectedBatch && (
@@ -26,4 +24,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default Inventory;

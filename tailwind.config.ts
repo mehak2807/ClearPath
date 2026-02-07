@@ -13,6 +13,10 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        sans: ['"IBM Plex Sans"', 'system-ui', 'sans-serif'],
+        mono: ['"IBM Plex Mono"', 'monospace'],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -57,6 +61,20 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        cp: {
+          sidebar: "hsl(var(--cp-sidebar))",
+          "sidebar-foreground": "hsl(var(--cp-sidebar-foreground))",
+          "sidebar-active": "hsl(var(--cp-sidebar-active))",
+          "sidebar-hover": "hsl(var(--cp-sidebar-hover))",
+          verified: "hsl(var(--cp-verified))",
+          "verified-foreground": "hsl(var(--cp-verified-foreground))",
+          warning: "hsl(var(--cp-warning))",
+          "warning-foreground": "hsl(var(--cp-warning-foreground))",
+          info: "hsl(var(--cp-info))",
+          "info-foreground": "hsl(var(--cp-info-foreground))",
+          danger: "hsl(var(--cp-danger))",
+          crypto: "hsl(var(--cp-crypto))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -65,25 +83,32 @@ export default {
       },
       keyframes: {
         "accordion-down": {
-          from: {
-            height: "0",
-          },
-          to: {
-            height: "var(--radix-accordion-content-height)",
-          },
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
         },
         "accordion-up": {
-          from: {
-            height: "var(--radix-accordion-content-height)",
-          },
-          to: {
-            height: "0",
-          },
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
+        },
+        "pulse-glow": {
+          "0%, 100%": { boxShadow: "0 0 8px hsl(152 60% 45% / 0.3)" },
+          "50%": { boxShadow: "0 0 20px hsl(152 60% 45% / 0.6)" },
+        },
+        "slide-in": {
+          from: { opacity: "0", transform: "translateY(8px)" },
+          to: { opacity: "1", transform: "translateY(0)" },
+        },
+        "wire-flow": {
+          "0%": { backgroundPosition: "0% 50%" },
+          "100%": { backgroundPosition: "200% 50%" },
         },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "pulse-glow": "pulse-glow 2s ease-in-out infinite",
+        "slide-in": "slide-in 0.3s ease-out",
+        "wire-flow": "wire-flow 1.5s linear infinite",
       },
     },
   },
