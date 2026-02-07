@@ -1,3 +1,4 @@
+import avatarMap from "./avatarMap";
 export interface Actor {
   id: string;
   name: string;
@@ -40,18 +41,18 @@ export interface ERPRecord {
 }
 
 const actors: Actor[] = [
-  { id: "ACT-001", name: "Farmer Ramesh", role: "Farmer", organization: "Green Valley Farms", location: "Coorg, Karnataka", avatar: "🧑‍🌾", verified: true },
-  { id: "ACT-002", name: "Priya Sharma", role: "Collector", organization: "AgroCollect India", location: "Madikeri, India", avatar: "👩‍💼", verified: true },
-  { id: "ACT-003", name: "Vikram Patel", role: "Processing Unit", organization: "SpiceProcess Ltd.", location: "Mysore, India", avatar: "🏭", verified: true },
-  { id: "ACT-004", name: "TransitCorp", role: "Logistics", organization: "TransitCorp Pvt Ltd", location: "Bangalore Highway", avatar: "🚛", verified: true },
-  { id: "ACT-005", name: "Rajan Mehta", role: "Custom Agent", organization: "ClearPort Agency", location: "Mangalore Port", avatar: "📋", verified: true },
-  { id: "ACT-006", name: "OceanShip Global", role: "Shipping", organization: "OceanShip Global", location: "Arabian Sea", avatar: "🚢", verified: true },
-  { id: "ACT-007", name: "Hans Mueller", role: "Custom Agent", organization: "EU ClearPort", location: "Port of Rotterdam", avatar: "📋", verified: true },
-  { id: "ACT-008", name: "Dr. Anna Weber", role: "Testing Lab", organization: "EuroLab Certified", location: "Utrecht, Netherlands", avatar: "🔬", verified: true },
-  { id: "ACT-009", name: "Nestlé Factory", role: "Factory", organization: "Nestlé S.A.", location: "Vevey, Switzerland", avatar: "🏭", verified: true },
-  { id: "ACT-010", name: "GlobalDist GmbH", role: "Global Distributor", organization: "GlobalDist GmbH", location: "Frankfurt, Germany", avatar: "📦", verified: true },
-  { id: "ACT-011", name: "QuickDeliver India", role: "Local Logistics", organization: "QuickDeliver Pvt Ltd", location: "New Delhi, India", avatar: "🛵", verified: true },
-  { id: "ACT-012", name: "Khan Market Store", role: "Retailer", organization: "Premium Grocers", location: "Khan Market, Delhi", avatar: "🏪", verified: true },
+  { id: "ACT-001", name: "Farmer Ramesh", role: "Farmer", organization: "Green Valley Farms", location: "Coorg, Karnataka", avatar: "", verified: true },
+  { id: "ACT-002", name: "Priya Sharma", role: "Collector", organization: "AgroCollect India", location: "Madikeri, India", avatar: "", verified: true },
+  { id: "ACT-003", name: "Vikram Patel", role: "Processing Unit", organization: "SpiceProcess Ltd.", location: "Mysore, India", avatar: "", verified: true },
+  { id: "ACT-004", name: "TransitCorp", role: "Logistics", organization: "TransitCorp Pvt Ltd", location: "Bangalore Highway", avatar: "", verified: true },
+  { id: "ACT-005", name: "Rajan Mehta", role: "Custom Agent", organization: "ClearPort Agency", location: "Mangalore Port", avatar: "", verified: true },
+  { id: "ACT-006", name: "OceanShip Global", role: "Shipping", organization: "OceanShip Global", location: "Arabian Sea", avatar: "", verified: true },
+  { id: "ACT-007", name: "Hans Mueller", role: "Custom Agent", organization: "EU ClearPort", location: "Port of Rotterdam", avatar: "", verified: true },
+  { id: "ACT-008", name: "Dr. Anna Weber", role: "Testing Lab", organization: "EuroLab Certified", location: "Utrecht, Netherlands", avatar: "", verified: true },
+  { id: "ACT-009", name: "Nestlé Factory", role: "Factory", organization: "Nestlé S.A.", location: "Vevey, Switzerland", avatar: "", verified: true },
+  { id: "ACT-010", name: "GlobalDist GmbH", role: "Global Distributor", organization: "GlobalDist GmbH", location: "Frankfurt, Germany", avatar: "", verified: true },
+  { id: "ACT-011", name: "QuickDeliver India", role: "Local Logistics", organization: "QuickDeliver Pvt Ltd", location: "New Delhi, India", avatar: "", verified: true },
+  { id: "ACT-012", name: "Khan Market Store", role: "Retailer", organization: "Premium Grocers", location: "Khan Market, Delhi", avatar: "", verified: true },
 ];
 
 export const batches: Batch[] = [

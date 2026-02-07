@@ -26,7 +26,7 @@ const QRVerify = () => {
       </div>
 
       {!scanned ? (
-        <CameraScanner onScanComplete={handleScanComplete} duration={25} />
+        <CameraScanner onScanComplete={handleScanComplete} duration={7} />
       ) : (
         <VerifiedResult batch={verifiedBatch} />
       )}

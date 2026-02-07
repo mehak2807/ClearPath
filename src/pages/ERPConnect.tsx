@@ -4,10 +4,10 @@ import { Plug, Check, Loader2, ShieldCheck, Fingerprint } from "lucide-react";
 import { erpRecords, ERPRecord } from "@/data/mockData";
 
 const erpSystems = [
-  { name: "SAP", icon: "🔷" },
-  { name: "Oracle", icon: "🔴" },
-  { name: "Tally", icon: "📊" },
-  { name: "Custom API", icon: "⚙️" },
+  { name: "SAP", icon: "S" },
+  { name: "Oracle", icon: "O" },
+  { name: "Tally", icon: "T" },
+  { name: "Custom API", icon: "C" },
 ];
 
 const ERPConnect = () => {
