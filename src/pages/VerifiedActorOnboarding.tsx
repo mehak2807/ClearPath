@@ -616,10 +616,10 @@ const VerifiedActorOnboarding = () => {
                 transition={{ delay: 0.9 }}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                onClick={() => navigate("/erp")}
+                onClick={() => navigate("/verified-actor-dashboard")}
                 className="w-full py-3 px-4 rounded-lg bg-primary text-primary-foreground font-medium hover:opacity-90 transition-opacity flex items-center justify-center space-x-2"
               >
-                <span>Go to ERP Connect</span>
+                <span>Continue to Dashboard</span>
                 <ArrowRight className="w-4 h-4" />
               </motion.button>
             </motion.div>

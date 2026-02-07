@@ -14,6 +14,8 @@ import HomePage from "./pages/HomePage";
 import NotFound from "./pages/NotFound";
 import VerifiedActorOnboarding from "./pages/VerifiedActorOnboarding";
 import CompanyOnboarding from "./pages/CompanyOnboarding";
+import VerifiedActorDashboard from "./pages/VerifiedActorDashboard";
+import UnverifiedProducts from "./pages/UnverifiedProducts";
 
 const queryClient = new QueryClient();
 
@@ -38,6 +40,8 @@ const App = () => (
             <Route path="/settings" element={<SettingsPage />} />
             <Route path="/verified-actor-onboarding" element={<VerifiedActorOnboarding />} />
             <Route path="/company-onboarding" element={<CompanyOnboarding />} />
+            <Route path="/verified-actor-dashboard" element={<VerifiedActorDashboard />} />
+            <Route path="/unverified-products" element={<UnverifiedProducts />} />
           </Route>
           
           <Route path="*" element={<NotFound />} />
