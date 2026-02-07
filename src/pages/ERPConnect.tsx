@@ -31,6 +31,7 @@ const ERPConnect = () => {
   const [productStatus, setProductStatus] = useState<string>("Manufactured");
   const [productQuantity, setProductQuantity] = useState<string>("");
   const [productLocation, setProductLocation] = useState<string>("");
+  // Truncate ISO string to 'YYYY-MM-DDTHH:mm' format for datetime-local input
   const [productTimestamp, setProductTimestamp] = useState<string>(
     new Date().toISOString().slice(0, 16)
   );
