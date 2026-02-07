@@ -6,11 +6,6 @@ export const generateJourneyPDF = (batch: Batch) => {
   const doc = new jsPDF();
   let yPosition = 20;
   
-  // Helper function to add text with auto line break
-  const addText = (text: string, x: number, y: number, options?: { align?: 'left' | 'center' | 'right' }) => {
-    doc.text(text, x, y, options);
-  };
-  
   // Helper to check if new page is needed
   const checkPageBreak = (requiredSpace: number) => {
     if (yPosition + requiredSpace > 270) { // A4 height - margin
