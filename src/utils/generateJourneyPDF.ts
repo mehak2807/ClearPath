@@ -7,7 +7,7 @@ export const generateJourneyPDF = (batch: Batch) => {
   let yPosition = 20;
   
   // Helper function to add text with auto line break
-  const addText = (text: string, x: number, y: number, options?: any) => {
+  const addText = (text: string, x: number, y: number, options?: { align?: 'left' | 'center' | 'right' }) => {
     doc.text(text, x, y, options);
   };
   
@@ -191,7 +191,7 @@ export const generateJourneyPDF = (batch: Batch) => {
   });
   
   // 4. FOOTER (on last page)
-  const pageCount = (doc as any).internal.pages.length - 1;
+  const pageCount = doc.getNumberOfPages();
   for (let i = 1; i <= pageCount; i++) {
     doc.setPage(i);
     doc.setFontSize(8);
