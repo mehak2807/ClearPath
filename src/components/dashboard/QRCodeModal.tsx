@@ -8,11 +8,14 @@ interface QRCodeModalProps {
   onClose: () => void;
 }
 
+// Base URL for verification - can be configured per environment
+const VERIFICATION_BASE_URL = import.meta.env.VITE_VERIFICATION_URL || "https://clearpath.app/verify";
+
 const QRCodeModal = ({ batch, onClose }: QRCodeModalProps) => {
   if (!batch) return null;
 
   // Generate verification URL for the batch
-  const verificationUrl = `https://clearpath.app/verify/${batch.id}`;
+  const verificationUrl = `${VERIFICATION_BASE_URL}/${batch.id}`;
 
   return (
     <AnimatePresence>
@@ -49,13 +52,15 @@ const QRCodeModal = ({ batch, onClose }: QRCodeModalProps) => {
 
           {/* QR Code Content */}
           <div className="flex flex-col items-center px-6 py-8">
-            {/* QR Code */}
+            {/* QR Code - white background required for optimal scanning */}
             <div className="bg-white p-4 rounded-lg shadow-sm">
               <QRCodeSVG
                 value={verificationUrl}
                 size={256}
                 level="H"
                 includeMargin={false}
+                bgColor="#FFFFFF"
+                fgColor="#000000"
               />
             </div>
 
