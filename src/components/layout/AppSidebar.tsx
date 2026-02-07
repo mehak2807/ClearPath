@@ -1,31 +1,48 @@
-import { NavLink, useLocation } from "react-router-dom";
-import { LayoutDashboard, Package, Users, Plug, QrCode, Settings, Shield } from "lucide-react";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { LayoutDashboard, Package, Users, Plug, QrCode, Settings, ShieldCheck, Home } from "lucide-react";
+import { useUserRole, UserRole } from "@/context/UserRoleContext";
 
-const navItems = [
-  { label: "Dashboard", icon: LayoutDashboard, path: "/" },
-  { label: "Inventory", icon: Package, path: "/inventory" },
-  { label: "Actors", icon: Users, path: "/actors" },
-  { label: "ERP Connect", icon: Plug, path: "/erp" },
-  { label: "QR Verify", icon: QrCode, path: "/verify" },
-  { label: "Settings", icon: Settings, path: "/settings" },
+interface NavItem {
+  label: string;
+  icon: typeof LayoutDashboard;
+  path: string;
+  roles: UserRole[];
+}
+
+const allNavItems: NavItem[] = [
+  { label: "Dashboard", icon: LayoutDashboard, path: "/dashboard", roles: ["company"] },
+  { label: "Inventory", icon: Package, path: "/inventory", roles: ["company"] },
+  { label: "Verified Actors", icon: ShieldCheck, path: "/actors", roles: ["actor", "company"] },
+  { label: "ERP Connect", icon: Plug, path: "/erp", roles: ["company"] },
+  { label: "QR Verify", icon: QrCode, path: "/verify", roles: ["consumer", "company"] },
+  { label: "Settings", icon: Settings, path: "/settings", roles: ["actor", "company"] },
 ];
 
 const AppSidebar = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { userRole, clearUserRole } = useUserRole();
+
+  // Filter navigation items based on user role
+  const navItems = allNavItems.filter(item => 
+    item.roles.includes(userRole)
+  );
+
+  const handleBackToHome = () => {
+    clearUserRole();
+    navigate("/home");
+  };
 
   return (
     <aside className="fixed left-0 top-0 h-screen w-64 bg-cp-sidebar flex flex-col z-40">
-      {/* Logo */
-      
-      }
+      {/* Logo */}
       <div className="px-6 py-6 flex items-center gap-3">
         <div className="w-9 h-9 rounded-lg bg-primary flex items-center justify-center">
-          
           <img
-      src="/favicon.png"
-      alt="ClearPath logo"
-      className="w-8 h-8"
-    />
+            src="/favicon.png"
+            alt="ClearPath logo"
+            className="w-8 h-8"
+          />
         </div>
         <span className="text-xl font-bold tracking-tight text-sidebar-accent-foreground">
           ClearPath
@@ -54,6 +71,15 @@ const AppSidebar = () => {
             </NavLink>
           );
         })}
+
+        {/* Back to Home button */}
+        <button
+          onClick={handleBackToHome}
+          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-cp-sidebar-foreground hover:bg-cp-sidebar-hover hover:text-sidebar-accent-foreground transition-all duration-200 mt-4 border-t border-sidebar-border pt-4"
+        >
+          <Home className="w-[18px] h-[18px]" />
+          Back to Home
+        </button>
       </nav>
 
       {/* Footer */}
