@@ -8,44 +8,75 @@ import {
   CheckCircle2,
   Loader2,
   FileText,
-  User,
-  Building2,
-  MapPin,
   ArrowRight,
   ShieldCheck,
+  Hash,
 } from "lucide-react";
 
-// Mock actor data - used as placeholder for demonstration
-const MOCK_ACTOR_DATA = {
-  id: "ACT-101",
-  name: "Your Organization",
-  role: "Verified Actor",
-  organization: "Your Company Ltd.",
-  location: "Your Location",
-  verified: true,
-};
-
-type Step = "phone" | "identity" | "complete";
+type Step = "phone" | "otp" | "identity" | "complete";
 
 const VerifiedActorOnboarding = () => {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState<Step>("phone");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [isVerifyingPhone, setIsVerifyingPhone] = useState(false);
-  const [phoneVerified, setPhoneVerified] = useState(false);
+  const [phoneNumber, setPhoneNumber] = useState("+91 ");
+  const [isSendingOtp, setIsSendingOtp] = useState(false);
+  const [otpSent, setOtpSent] = useState(false);
+  const [otp, setOtp] = useState(['', '', '', '', '', '']);
+  const [isVerifyingOtp, setIsVerifyingOtp] = useState(false);
+  const [otpVerified, setOtpVerified] = useState(false);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [isVerifyingIdentity, setIsVerifyingIdentity] = useState(false);
   const [identityVerified, setIdentityVerified] = useState(false);
   const [verificationProgress, setVerificationProgress] = useState(0);
   const progressIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  const handlePhoneVerification = async () => {
-    setIsVerifyingPhone(true);
-    await new Promise((r) => setTimeout(r, 2500));
-    setIsVerifyingPhone(false);
-    setPhoneVerified(true);
+  const handleSendOtp = async () => {
+    setIsSendingOtp(true);
+    await new Promise((r) => setTimeout(r, 2000));
+    setOtpSent(true);
     await new Promise((r) => setTimeout(r, 800));
+    setIsSendingOtp(false);
+    setCurrentStep("otp");
+  };
+
+  const handleOtpChange = (index: number, value: string) => {
+    if (value.length <= 1 && /^\d*$/.test(value)) {
+      const newOtp = [...otp];
+      newOtp[index] = value;
+      setOtp(newOtp);
+      
+      // Auto-focus next input
+      if (value && index < 5) {
+        document.getElementById(`otp-${index + 1}`)?.focus();
+      }
+      
+      // Auto-submit when all 6 digits entered
+      if (index === 5 && value && newOtp.every(digit => digit !== '')) {
+        handleVerifyOtp();
+      }
+    }
+  };
+
+  const handleKeyDown = (index: number, e: React.KeyboardEvent) => {
+    if (e.key === 'Backspace' && !otp[index] && index > 0) {
+      document.getElementById(`otp-${index - 1}`)?.focus();
+    }
+  };
+
+  const handleVerifyOtp = async () => {
+    setIsVerifyingOtp(true);
+    await new Promise((r) => setTimeout(r, 2000));
+    setOtpVerified(true);
+    await new Promise((r) => setTimeout(r, 800));
+    setIsVerifyingOtp(false);
     setCurrentStep("identity");
+  };
+
+  const handleResendOtp = () => {
+    setOtp(['', '', '', '', '', '']);
+    setOtpSent(false);
+    setOtpVerified(false);
+    handleSendOtp();
   };
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -106,6 +137,7 @@ const VerifiedActorOnboarding = () => {
 
   const steps = [
     { id: "phone", label: "Phone", icon: Phone },
+    { id: "otp", label: "OTP", icon: Hash },
     { id: "identity", label: "Identity", icon: Upload },
     { id: "complete", label: "Complete", icon: BadgeCheck },
   ];
@@ -200,14 +232,14 @@ const VerifiedActorOnboarding = () => {
             >
               <div>
                 <h2 className="text-xl font-semibold text-foreground mb-2">
-                  Phone Number Verification
+                  Phone Number Entry
                 </h2>
                 <p className="text-sm text-muted-foreground">
                   Enter your phone number to receive a verification code
                 </p>
               </div>
 
-              {!phoneVerified ? (
+              {!otpSent ? (
                 <>
                   <div className="space-y-2">
                     <label className="text-sm font-medium text-foreground">
@@ -217,30 +249,30 @@ const VerifiedActorOnboarding = () => {
                       type="tel"
                       value={phoneNumber}
                       onChange={(e) => setPhoneNumber(e.target.value)}
-                      placeholder="+1 (555) 000-0000"
+                      placeholder="+91 98765 43210"
                       className="w-full px-4 py-3 rounded-lg border border-input bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-                      disabled={isVerifyingPhone}
+                      disabled={isSendingOtp}
                     />
                   </div>
 
-                  {!isVerifyingPhone ? (
+                  {!isSendingOtp ? (
                     <button
-                      onClick={handlePhoneVerification}
-                      disabled={!phoneNumber}
+                      onClick={handleSendOtp}
+                      disabled={!phoneNumber || phoneNumber === "+91 "}
                       className="w-full py-3 px-4 rounded-lg bg-primary text-primary-foreground font-medium hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      Verify Phone Number
+                      Send OTP
                     </button>
                   ) : (
                     <div className="space-y-4">
                       <div className="flex items-center justify-center space-x-3 py-3">
                         <Loader2 className="w-5 h-5 text-primary animate-spin" />
                         <span className="text-foreground font-medium">
-                          Verifying phone number...
+                          Sending OTP...
                         </span>
                       </div>
                       <p className="text-sm text-center text-muted-foreground">
-                        Sending verification code
+                        Please wait while we send the verification code
                       </p>
                     </div>
                   )}
@@ -261,7 +293,106 @@ const VerifiedActorOnboarding = () => {
                   </motion.div>
                   <div>
                     <h3 className="text-xl font-semibold text-cp-verified mb-2">
-                      Phone Verified!
+                      OTP Sent Successfully!
+                    </h3>
+                    <p className="text-sm text-muted-foreground">
+                      Check your phone for the verification code
+                    </p>
+                  </div>
+                </motion.div>
+              )}
+            </motion.div>
+          )}
+
+          {currentStep === "otp" && (
+            <motion.div
+              key="otp"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              className="bg-card rounded-xl border border-border p-8 space-y-6"
+            >
+              <div className="text-center">
+                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-cp-verified/10 mb-4">
+                  <Hash className="w-8 h-8 text-cp-verified" />
+                </div>
+                <h2 className="text-xl font-semibold text-foreground mb-2">
+                  Verify OTP
+                </h2>
+                <p className="text-sm text-muted-foreground">
+                  Enter the 6-digit code sent to your phone
+                </p>
+              </div>
+
+              {!otpVerified ? (
+                <>
+                  <div className="flex gap-2 justify-center">
+                    {otp.map((digit, index) => (
+                      <input
+                        key={index}
+                        id={`otp-${index}`}
+                        type="text"
+                        inputMode="numeric"
+                        maxLength={1}
+                        value={digit}
+                        onChange={(e) => handleOtpChange(index, e.target.value)}
+                        onKeyDown={(e) => handleKeyDown(index, e)}
+                        className="w-12 h-12 text-center text-xl font-bold border-2 border-border rounded-lg focus:border-primary focus:outline-none bg-card"
+                        disabled={isVerifyingOtp}
+                      />
+                    ))}
+                  </div>
+
+                  <div className="text-center">
+                    <button
+                      onClick={handleResendOtp}
+                      className="text-sm text-primary hover:underline"
+                      disabled={isVerifyingOtp}
+                    >
+                      Didn't receive code? Resend OTP
+                    </button>
+                  </div>
+
+                  {!isVerifyingOtp ? (
+                    <button
+                      onClick={handleVerifyOtp}
+                      disabled={otp.some(digit => digit === '')}
+                      className="w-full py-3 px-4 rounded-lg bg-primary text-primary-foreground font-medium hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
+                    >
+                      <span>Verify OTP</span>
+                      <ArrowRight className="w-4 h-4" />
+                    </button>
+                  ) : (
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-center space-x-3 py-3">
+                        <Loader2 className="w-5 h-5 text-primary animate-spin" />
+                        <span className="text-foreground font-medium">
+                          Verifying OTP...
+                        </span>
+                      </div>
+                      <p className="text-sm text-center text-muted-foreground">
+                        Authenticating your phone number
+                      </p>
+                    </div>
+                  )}
+                </>
+              ) : (
+                <motion.div
+                  initial={{ scale: 0.9, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  className="space-y-4 text-center py-6"
+                >
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ type: "spring", stiffness: 200 }}
+                    className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-cp-verified/10"
+                  >
+                    <CheckCircle2 className="w-10 h-10 text-cp-verified" />
+                  </motion.div>
+                  <div>
+                    <h3 className="text-xl font-semibold text-cp-verified mb-2">
+                      Phone Verified Successfully!
                     </h3>
                     <p className="text-sm text-muted-foreground">
                       Proceeding to identity verification...
@@ -445,81 +576,11 @@ const VerifiedActorOnboarding = () => {
                 </motion.p>
               </motion.div>
 
-              {/* Actor Profile Card */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5 }}
-                className="bg-card rounded-xl border border-border p-6 space-y-4"
-              >
-                <div className="flex items-start space-x-4">
-                  <motion.div
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ type: "spring", delay: 0.6 }}
-                    className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center"
-                  >
-                    <User className="w-8 h-8 text-primary" />
-                  </motion.div>
-                  <div className="flex-1">
-                    <motion.div
-                      initial={{ opacity: 0, x: -10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.7 }}
-                      className="flex items-center space-x-2 mb-1"
-                    >
-                      <h3 className="text-xl font-semibold text-foreground">
-                        {MOCK_ACTOR_DATA.name}
-                      </h3>
-                      <motion.div
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        transition={{ type: "spring", delay: 0.8 }}
-                      >
-                        <BadgeCheck className="w-5 h-5 text-cp-verified" />
-                      </motion.div>
-                    </motion.div>
-                    <motion.p
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 0.9 }}
-                      className="text-sm text-muted-foreground"
-                    >
-                      {MOCK_ACTOR_DATA.role}
-                    </motion.p>
-                  </div>
-                </div>
-
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 1.0 }}
-                  className="space-y-3 pt-4 border-t border-border"
-                >
-                  <div className="flex items-center space-x-3 text-sm">
-                    <Building2 className="w-4 h-4 text-muted-foreground" />
-                    <span className="text-foreground">
-                      {MOCK_ACTOR_DATA.organization}
-                    </span>
-                  </div>
-                  <div className="flex items-center space-x-3 text-sm">
-                    <MapPin className="w-4 h-4 text-muted-foreground" />
-                    <span className="text-foreground">{MOCK_ACTOR_DATA.location}</span>
-                  </div>
-                  <div className="flex items-center space-x-3 text-sm">
-                    <BadgeCheck className="w-4 h-4 text-cp-verified" />
-                    <span className="text-foreground">
-                      Actor ID: {MOCK_ACTOR_DATA.id}
-                    </span>
-                  </div>
-                </motion.div>
-              </motion.div>
-
               {/* Next Steps */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1.1 }}
+                transition={{ delay: 0.5 }}
                 className="bg-card rounded-xl border border-border p-6 space-y-4"
               >
                 <h3 className="text-lg font-semibold text-foreground">
@@ -535,7 +596,7 @@ const VerifiedActorOnboarding = () => {
                       key={step}
                       initial={{ opacity: 0, x: -10 }}
                       animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 1.2 + index * 0.1 }}
+                      transition={{ delay: 0.6 + index * 0.1 }}
                       className="flex items-center space-x-3"
                     >
                       <CheckCircle2 className="w-5 h-5 text-cp-verified flex-shrink-0" />
@@ -549,7 +610,7 @@ const VerifiedActorOnboarding = () => {
               <motion.button
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1.5 }}
+                transition={{ delay: 0.9 }}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => navigate("/erp")}
