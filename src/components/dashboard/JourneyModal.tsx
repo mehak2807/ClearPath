@@ -1,7 +1,8 @@
-import { X, CheckCircle2, MapPin, Clock, Fingerprint } from "lucide-react";
+import { X, CheckCircle2, MapPin, Clock, Fingerprint, User, BadgeCheck } from "lucide-react";
 import { Batch, JourneyEvent } from "@/data/mockData";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
+import avatarMap from "@/data/avatarMap";
 
 interface JourneyModalProps {
   batch: Batch | null;
@@ -119,11 +120,20 @@ const JourneyModal = ({ batch, onClose }: JourneyModalProps) => {
                                 {/* Event content */}
                                 <div className="bg-muted/30 rounded-lg p-4 border border-border/50">
                                   <div className="flex items-start gap-3">
-                                    <span className="text-2xl">{event.actor.avatar}</span>
+                                    {(() => {
+                                      const avatar = avatarMap[event.actor.id];
+                                      return avatar ? (
+                                        <img src={avatar} alt={event.actor.name} className="w-10 h-10 rounded-full object-cover ring-2 ring-border shrink-0" />
+                                      ) : (
+                                        <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center ring-2 ring-border shrink-0">
+                                          <User className="w-5 h-5 text-muted-foreground" />
+                                        </div>
+                                      );
+                                    })()}
                                     <div className="flex-1 min-w-0">
                                       <div className="flex items-center gap-2 flex-wrap">
                                         <span className="font-medium text-sm text-foreground">{event.actor.name}</span>
-                                        <CheckCircle2 className="w-3.5 h-3.5 text-primary shrink-0" />
+                                        {event.actor.verified && <BadgeCheck className="w-3.5 h-3.5 text-primary shrink-0" />}
                                         <span className="text-xs text-muted-foreground">{event.actor.role}</span>
                                       </div>
                                       <p className="text-sm font-medium text-foreground mt-1">{event.action}</p>
