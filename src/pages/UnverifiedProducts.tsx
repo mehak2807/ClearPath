@@ -1,20 +1,21 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   Building2,
   Package,
   MapPin,
   Calendar,
   ArrowRight,
-  Eye,
+  CheckCircle2,
 } from "lucide-react";
-import { batches } from "@/data/mockData";
+import { batches, Batch } from "@/data/mockData";
 
 const UnverifiedProducts = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const selectedCompany = location.state?.company;
+  const [selectedProduct, setSelectedProduct] = useState<Batch | null>(null);
 
   // Redirect to company selection if no company is selected
   useEffect(() => {
@@ -29,12 +30,13 @@ const UnverifiedProducts = () => {
   );
 
   const handleProceedToERP = () => {
-    navigate("/erp");
+    if (selectedProduct) {
+      navigate("/erp", { state: { product: selectedProduct } });
+    }
   };
 
-  const handleViewDetails = (batchId: string) => {
-    // TODO: Navigate to batch details page or open modal
-    console.log("View details for batch:", batchId);
+  const handleProductSelect = (batch: Batch) => {
+    setSelectedProduct(batch);
   };
 
   const statusColors: Record<string, string> = {
@@ -94,7 +96,12 @@ const UnverifiedProducts = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.05 }}
             whileHover={{ scale: 1.02 }}
-            className="bg-card rounded-xl border border-border p-5 space-y-4 hover:shadow-lg transition-all"
+            onClick={() => handleProductSelect(batch)}
+            className={`bg-card rounded-xl border-2 p-5 space-y-4 hover:shadow-lg transition-all cursor-pointer ${
+              selectedProduct?.id === batch.id
+                ? "border-accent bg-accent/10"
+                : "border-border hover:border-accent/50"
+            }`}
           >
             {/* Product Header */}
             <div className="space-y-2">
@@ -102,12 +109,19 @@ const UnverifiedProducts = () => {
                 <h3 className="text-lg font-bold text-foreground line-clamp-2">
                   {batch.productName}
                 </h3>
-                <div
-                  className={`px-2 py-1 rounded-md text-xs font-medium border whitespace-nowrap ${
-                    statusColors[batch.status] || "bg-muted text-muted-foreground"
-                  }`}
-                >
-                  {batch.status}
+                <div className="flex items-center gap-2">
+                  <div
+                    className={`px-2 py-1 rounded-md text-xs font-medium border whitespace-nowrap ${
+                      statusColors[batch.status] || "bg-muted text-muted-foreground"
+                    }`}
+                  >
+                    {batch.status}
+                  </div>
+                  {selectedProduct?.id === batch.id && (
+                    <div className="flex-shrink-0">
+                      <CheckCircle2 className="w-5 h-5 text-accent" />
+                    </div>
+                  )}
                 </div>
               </div>
               <p className="text-sm text-muted-foreground font-mono">
@@ -133,13 +147,6 @@ const UnverifiedProducts = () => {
                 <span className="text-muted-foreground">
                   Journey Steps: {batch.journey.length}
                 </span>
-                <button
-                  onClick={() => handleViewDetails(batch.id)}
-                  className="flex items-center gap-1 text-accent hover:text-accent/80 font-medium transition-colors"
-                >
-                  <Eye className="w-4 h-4" />
-                  <span>View Details</span>
-                </button>
               </div>
             </div>
           </motion.div>
@@ -175,7 +182,8 @@ const UnverifiedProducts = () => {
         <div className="bg-background/80 backdrop-blur-sm rounded-xl border border-border p-4">
           <button
             onClick={handleProceedToERP}
-            className="w-full py-3 px-4 rounded-lg bg-primary text-primary-foreground font-medium hover:opacity-90 transition-opacity flex items-center justify-center space-x-2"
+            disabled={!selectedProduct}
+            className="w-full py-3 px-4 rounded-lg bg-primary text-primary-foreground font-medium hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
           >
             <span>Proceed to ERP Connect</span>
             <ArrowRight className="w-4 h-4" />

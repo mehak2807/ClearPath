@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Plug, Check, Loader2, ShieldCheck, Fingerprint } from "lucide-react";
-import { erpRecords, ERPRecord } from "@/data/mockData";
+import { Plug, Check, Loader2, ShieldCheck, Fingerprint, Package, MapPin } from "lucide-react";
+import { erpRecords, ERPRecord, Batch } from "@/data/mockData";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const erpSystems = [
   { name: "SAP", icon: "S" },
@@ -11,6 +12,10 @@ const erpSystems = [
 ];
 
 const ERPConnect = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const selectedProduct = location.state?.product as Batch | undefined;
+
   const [selectedERP, setSelectedERP] = useState<string | null>(null);
   const [endpointUrl, setEndpointUrl] = useState("https://nestle-erp.com/api/v1");
   const [accessToken, setAccessToken] = useState("eyJhbGciOi...");
@@ -21,6 +26,22 @@ const ERPConnect = () => {
   const [showSigning, setShowSigning] = useState(false);
   const [signatureGenerated, setSignatureGenerated] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+
+  // Product details state
+  const [productStatus, setProductStatus] = useState<string>("Manufactured");
+  const [productQuantity, setProductQuantity] = useState<string>("");
+  const [productLocation, setProductLocation] = useState<string>("");
+  // Truncate ISO string to 'YYYY-MM-DDTHH:mm' format for datetime-local input
+  const [productTimestamp, setProductTimestamp] = useState<string>(
+    new Date().toISOString().slice(0, 16)
+  );
+
+  // Redirect if no product selected
+  useEffect(() => {
+    if (!selectedProduct) {
+      navigate("/verified-actor-dashboard", { replace: true });
+    }
+  }, [selectedProduct, navigate]);
 
   const handleConnect = async () => {
     setIsConnecting(true);
@@ -49,6 +70,16 @@ const ERPConnect = () => {
     setShowSigning(true);
     await new Promise((r) => setTimeout(r, 2500));
     setSignatureGenerated(true);
+    
+    // Log product details being sealed (in a real app, this would be sent to the blockchain)
+    console.log("Sealing product details:", {
+      product: selectedProduct,
+      status: productStatus,
+      quantity: productQuantity,
+      location: productLocation,
+      timestamp: productTimestamp,
+    });
+    
     await new Promise((r) => setTimeout(r, 1500));
     setShowSuccess(true);
   };
@@ -59,6 +90,11 @@ const ERPConnect = () => {
     Pending: "bg-muted text-muted-foreground",
   };
 
+  // If no product selected, return null (useEffect will handle redirect)
+  if (!selectedProduct) {
+    return null;
+  }
+
   return (
     <div className="space-y-6 max-w-4xl">
       <div>
@@ -67,6 +103,98 @@ const ERPConnect = () => {
           Connect your enterprise system to seal data into ClearPath
         </p>
       </div>
+
+      {/* Product Details Section */}
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="bg-card rounded-xl border border-border p-6"
+      >
+        <h2 className="text-sm font-semibold text-foreground mb-4">Selected Product Details</h2>
+        
+        {/* Product Info Display */}
+        <div className="bg-accent/10 rounded-lg p-4 mb-6 border border-accent/30">
+          <div className="flex items-start gap-4">
+            <div className="flex-shrink-0">
+              <div className="w-12 h-12 rounded-full bg-accent/15 flex items-center justify-center">
+                <Package className="w-6 h-6 text-accent" />
+              </div>
+            </div>
+            <div className="flex-1 space-y-1">
+              <h3 className="text-lg font-bold text-foreground">
+                {selectedProduct.productName}
+              </h3>
+              <p className="text-sm text-muted-foreground font-mono">
+                {selectedProduct.id}
+              </p>
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <MapPin className="w-4 h-4 text-accent" />
+                <span>{selectedProduct.origin}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Product Details Form */}
+        <div className="space-y-4">
+          <div>
+            <label className="text-xs font-medium text-muted-foreground mb-1 block">
+              Product Status <span className="text-red-500">*</span>
+            </label>
+            <select
+              value={productStatus}
+              onChange={(e) => setProductStatus(e.target.value)}
+              className="w-full px-4 py-2.5 rounded-lg bg-muted border border-border text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/30"
+            >
+              <option value="Manufactured">Manufactured</option>
+              <option value="Harvested">Harvested</option>
+              <option value="In Transit">In Transit</option>
+              <option value="Processed">Processed</option>
+              <option value="Delivered">Delivered</option>
+            </select>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="text-xs font-medium text-muted-foreground mb-1 block">
+                Quantity
+              </label>
+              <input
+                type="text"
+                value={productQuantity}
+                onChange={(e) => setProductQuantity(e.target.value)}
+                placeholder="e.g., 500 kg"
+                className="w-full px-4 py-2.5 rounded-lg bg-muted border border-border text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/30"
+              />
+            </div>
+
+            <div>
+              <label className="text-xs font-medium text-muted-foreground mb-1 block">
+                Location
+              </label>
+              <input
+                type="text"
+                value={productLocation}
+                onChange={(e) => setProductLocation(e.target.value)}
+                placeholder="e.g., Warehouse A"
+                className="w-full px-4 py-2.5 rounded-lg bg-muted border border-border text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/30"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="text-xs font-medium text-muted-foreground mb-1 block">
+              Timestamp
+            </label>
+            <input
+              type="datetime-local"
+              value={productTimestamp}
+              onChange={(e) => setProductTimestamp(e.target.value)}
+              className="w-full px-4 py-2.5 rounded-lg bg-muted border border-border text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/30"
+            />
+          </div>
+        </div>
+      </motion.div>
 
       {/* ERP Selector */}
       <motion.div
