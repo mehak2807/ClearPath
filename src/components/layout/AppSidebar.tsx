@@ -12,8 +12,8 @@ interface NavItem {
 const allNavItems: NavItem[] = [
   { label: "Dashboard", icon: LayoutDashboard, path: "/dashboard", roles: ["company"] },
   { label: "Inventory", icon: Package, path: "/inventory", roles: ["company"] },
-  { label: "Verified Actors", icon: ShieldCheck, path: "/actors", roles: ["actor", "company"] },
-  { label: "ERP Connect", icon: Plug, path: "/erp", roles: ["company"] },
+  { label: "Verified Actors", icon: ShieldCheck, path: "/actors", roles: ["company"] },
+  { label: "ERP Connect", icon: Plug, path: "/erp", roles: ["actor", "company"] },
   { label: "QR Verify", icon: QrCode, path: "/verify", roles: ["consumer", "company"] },
   { label: "Settings", icon: Settings, path: "/settings", roles: ["actor", "company"] },
 ];
