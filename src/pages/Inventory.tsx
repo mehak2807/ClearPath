@@ -1,9 +1,11 @@
 import { useState } from "react";
 import BatchTable from "@/components/dashboard/BatchTable";
 import JourneyModal from "@/components/dashboard/JourneyModal";
-import { batches, Batch } from "@/data/mockData";
+import { Batch } from "@/data/mockData";
+import { useBatches } from "@/context/BatchContext";
 
 const Inventory = () => {
+  const { batches } = useBatches();
   const [selectedBatch, setSelectedBatch] = useState<Batch | null>(null);
 
   return (

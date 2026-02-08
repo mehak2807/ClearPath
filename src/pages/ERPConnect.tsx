@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Plug, Check, Loader2, ShieldCheck, Fingerprint, Package, MapPin } from "lucide-react";
-import { erpRecords, ERPRecord, Batch } from "@/data/mockData";
+import { erpRecords, ERPRecord, Batch, JourneyEvent, Actor } from "@/data/mockData";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useBatches } from "@/context/BatchContext";
 
 const erpSystems = [
   { name: "SAP", icon: "S" },
@@ -15,6 +16,7 @@ const ERPConnect = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const selectedProduct = location.state?.product as Batch | undefined;
+  const { addJourneyEvent, updateBatch } = useBatches();
 
   const [selectedERP, setSelectedERP] = useState<string | null>(null);
   const [endpointUrl, setEndpointUrl] = useState("https://nestle-erp.com/api/v1");
@@ -81,7 +83,74 @@ const ERPConnect = () => {
     });
     
     await new Promise((r) => setTimeout(r, 1500));
+    
+    // Create a new journey event with the product details
+    if (selectedProduct) {
+      // Generate a unique ID for the new event (based on current journey length + 1)
+      const newEventId = selectedProduct.journey.length + 1;
+      
+      // Generate a digital signature (random hex string for demonstration)
+      const digitalSignature = `0x${Math.random().toString(16).substring(2, 10)}${Math.random().toString(16).substring(2, 10)}...${Math.random().toString(16).substring(2, 6)}`;
+      
+      // Create a verified actor (you can customize this based on the current user)
+      const verifiedActor: Actor = {
+        id: "ACT-VERIFIED",
+        name: "Verified ERP Actor",
+        role: "Verified Actor",
+        organization: selectedERP || "ERP System",
+        location: productLocation || "Not specified",
+        avatar: "",
+        verified: true,
+      };
+      
+      // Format timestamp for display
+      const formattedTimestamp = new Date(productTimestamp).toLocaleString('en-IN', {
+        timeZone: 'Asia/Kolkata',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false,
+      }).replace(',', '') + ' IST';
+      
+      // Determine section based on product status
+      let section: "origin" | "transit" | "final" = "origin";
+      if (productStatus === "In Transit" || productStatus === "Processed") {
+        section = "transit";
+      } else if (productStatus === "Delivered") {
+        section = "final";
+      }
+      
+      const newEvent: JourneyEvent = {
+        id: newEventId,
+        actor: verifiedActor,
+        action: productStatus,
+        details: `ERP verified and sealed: ${productQuantity || 'Quantity not specified'}`,
+        timestamp: formattedTimestamp,
+        location: productLocation || "Location not specified",
+        digitalSignature: digitalSignature,
+        dataPoints: productQuantity ? { "Quantity": productQuantity } : undefined,
+        section: section,
+      };
+      
+      // Add the journey event to the batch
+      addJourneyEvent(selectedProduct.id, newEvent);
+      
+      // Update batch status if it's currently "Harvested" and we're adding a new event
+      if (selectedProduct.status === "Harvested" && productStatus !== "Harvested") {
+        updateBatch(selectedProduct.id, { 
+          status: productStatus as Batch['status']
+        });
+      }
+    }
+    
     setShowSuccess(true);
+    
+    // Navigate back to dashboard after 2 seconds
+    setTimeout(() => {
+      navigate("/dashboard");
+    }, 2000);
   };
 
   const statusStyles: Record<string, string> = {

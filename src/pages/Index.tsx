@@ -2,9 +2,11 @@ import { useState } from "react";
 import StatCards from "@/components/dashboard/StatCards";
 import BatchTable from "@/components/dashboard/BatchTable";
 import JourneyModal from "@/components/dashboard/JourneyModal";
-import { batches, Batch } from "@/data/mockData";
+import { Batch } from "@/data/mockData";
+import { useBatches } from "@/context/BatchContext";
 
 const Index = () => {
+  const { batches } = useBatches();
   const [selectedBatch, setSelectedBatch] = useState<Batch | null>(null);
 
   return (
