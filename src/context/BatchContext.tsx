@@ -54,7 +54,8 @@ export const BatchProvider: React.FC<{ children: ReactNode }> = ({ children }) =
           return {
             ...batch,
             journey: [...batch.journey, event],
-            lastUpdated: new Date().toISOString().split('T')[0], // Update lastUpdated to current date
+            // Update lastUpdated to current date (YYYY-MM-DD format for consistency with batch createdAt)
+            lastUpdated: new Date().toISOString().split('T')[0],
           };
         }
         return batch;

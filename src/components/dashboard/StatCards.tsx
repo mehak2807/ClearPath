@@ -23,7 +23,7 @@ const StatCards = () => {
     {
       title: "Total Batches",
       value: totalBatches.toString(),
-      change: "+12 this week",
+      change: "Dynamic count",
       icon: Package,
       color: "text-primary",
       bgColor: "bg-primary/10",
@@ -31,7 +31,7 @@ const StatCards = () => {
     {
       title: "Active Actors",
       value: activeActors.toString(),
-      change: "Across 6 regions",
+      change: "Unique verified actors",
       icon: Users,
       color: "text-accent",
       bgColor: "bg-accent/10",

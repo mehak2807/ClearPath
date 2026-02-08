@@ -89,7 +89,8 @@ const ERPConnect = () => {
       // Generate a unique ID for the new event (based on current journey length + 1)
       const newEventId = selectedProduct.journey.length + 1;
       
-      // Generate a digital signature (random hex string for demonstration)
+      // Generate a digital signature (random hex string for demonstration purposes only)
+      // In production, this should use a secure cryptographic function or signing service
       const digitalSignature = `0x${Math.random().toString(16).substring(2, 10)}${Math.random().toString(16).substring(2, 10)}...${Math.random().toString(16).substring(2, 6)}`;
       
       // Create a verified actor (you can customize this based on the current user)
