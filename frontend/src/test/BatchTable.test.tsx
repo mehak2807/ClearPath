@@ -73,14 +73,14 @@ describe("BatchTable", () => {
     expect(screen.getByText("#BATCH-003")).toBeInTheDocument();
   });
 
-  it("should display QR code images for all batches regardless of status", () => {
+  it("should display QR code images only for verified batches", () => {
     render(<BatchTable batches={mockBatches} onViewBatch={mockOnViewBatch} />);
     
     // Get all QR code images
-    const qrImages = screen.getAllByAltText("QR Code");
+    const qrImages = screen.queryAllByAltText("QR Code");
     
-    // Should have exactly 3 QR code images (one for each batch)
-    expect(qrImages).toHaveLength(3);
+    // Should have exactly 1 QR code image (only for verified batch)
+    expect(qrImages).toHaveLength(1);
     
     // All should be img elements
     qrImages.forEach((img) => {
@@ -88,20 +88,23 @@ describe("BatchTable", () => {
     });
   });
 
-  it("should display QR code for non-verified batches", () => {
+  it("should display 'Not verified' text for non-verified batches", () => {
     render(<BatchTable batches={mockBatches} onViewBatch={mockOnViewBatch} />);
     
-    // Check that batches with "In-Transit" and "Harvested" status also have QR codes
-    const qrImages = screen.getAllByAltText("QR Code");
-    expect(qrImages.length).toBe(mockBatches.length);
+    // Check that batches with "In-Transit" and "Harvested" status show "Not verified" text
+    const notVerifiedTexts = screen.getAllByText("Not verified");
+    expect(notVerifiedTexts).toHaveLength(2); // BATCH-002 and BATCH-003
   });
 
-  it("should open QR modal when clicking on QR code image", () => {
+  it("should open QR modal when clicking on QR code image for verified batch", () => {
     render(<BatchTable batches={mockBatches} onViewBatch={mockOnViewBatch} />);
     
-    const qrImages = screen.getAllByAltText("QR Code");
+    const qrImages = screen.queryAllByAltText("QR Code");
     
-    // Click the first QR code image
+    // Should only have one QR code image (for verified batch)
+    expect(qrImages).toHaveLength(1);
+    
+    // Click the QR code image
     fireEvent.click(qrImages[0]);
     
     // Modal should be visible
