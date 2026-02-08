@@ -50,9 +50,10 @@ MONGO_URI=your_mongodb_connection_string
 JWT_SECRET=your_secure_hash
 
 # 4. Launch
-npm start
+npm start```
+---
 
-### 2. Frontend Interface Configuration
+2. Frontend Setup
 The frontend serves as the multi-role gateway for Administrators, Supply Chain Actors, and Consumers. It is designed for high performance and real-time data visualization.
 
 * **Step 1: Navigate to the frontend directory**
@@ -74,8 +75,7 @@ The frontend serves as the multi-role gateway for Administrators, Supply Chain A
     ```
 
 ---
-
-## 🛡 Security & Verification Workflow
+🛡 Security & Verification Workflow
 
 ClearPath is built on a **Zero-Trust Framework**, ensuring that every data point is cryptographically sealed and every actor is held accountable through non-repudiable digital signatures.
 
@@ -93,3 +93,5 @@ ClearPath is built on a **Zero-Trust Framework**, ensuring that every data point
 ### Phase 3: Consumer Verification (Zero-Trust Logic)
 * **Real-time Audit:** When a consumer scans a product QR code, the system performs a live cryptographic audit instead of simply fetching static database text.
 * **Signature Validation:** The backend re-verifies the digital signature against the Actor’s stored Public Key. Only after confirming the **"Proof of Origin"** and validating the entire signature chain does the system grant trust and display the verified product timeline to the user.
+
+---
