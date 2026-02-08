@@ -89,18 +89,22 @@ const BatchTable = ({ batches, onViewBatch }: BatchTableProps) => {
                   </span>
                 </td>
                 <td className="px-5 py-3.5">
-                  <button
-                    onClick={() => handleQRClick(batch)}
-                    className="p-0 border-0 bg-transparent cursor-pointer"
-                    title="Click to view full QR Code"
-                    aria-label={`View QR code for batch ${batch.id}`}
-                  >
-                    <img
-                      src={QR_CODE_IMAGE}
-                      alt="QR Code"
-                      className="w-12 h-12 hover:opacity-70 transition-opacity"
-                    />
-                  </button>
+                  {batch.status === "Verified" ? (
+                    <button
+                      onClick={() => handleQRClick(batch)}
+                      className="p-0 border-0 bg-transparent cursor-pointer"
+                      title="Click to view full QR Code"
+                      aria-label={`View QR code for batch ${batch.id}`}
+                    >
+                      <img
+                        src={QR_CODE_IMAGE}
+                        alt="QR Code"
+                        className="w-12 h-12 hover:opacity-70 transition-opacity"
+                      />
+                    </button>
+                  ) : (
+                    <span className="text-xs text-muted-foreground">Not verified</span>
+                  )}
                 </td>
                 <td className="px-5 py-3.5 text-sm text-muted-foreground">{batch.lastUpdated}</td>
                 <td className="px-5 py-3.5">
