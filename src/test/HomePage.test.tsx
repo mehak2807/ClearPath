@@ -42,6 +42,12 @@ describe("HomePage", () => {
     expect(screen.getByText("Company")).toBeInTheDocument();
   });
 
+  it("should render exactly two role cards", () => {
+    renderHomePage();
+    const roleButtons = screen.getAllByRole("button", { name: /Enter as/i });
+    expect(roleButtons).toHaveLength(2);
+  });
+
   it("should render card descriptions and buttons", () => {
     renderHomePage();
     expect(
