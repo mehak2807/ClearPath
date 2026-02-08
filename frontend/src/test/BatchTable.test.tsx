@@ -85,7 +85,6 @@ describe("BatchTable", () => {
     // All should be img elements
     qrImages.forEach((img) => {
       expect(img.tagName).toBe("IMG");
-      expect(img).toHaveAttribute("title", "Click to view full QR Code");
     });
   });
 

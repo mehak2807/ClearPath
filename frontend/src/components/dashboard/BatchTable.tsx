@@ -89,13 +89,18 @@ const BatchTable = ({ batches, onViewBatch }: BatchTableProps) => {
                   </span>
                 </td>
                 <td className="px-5 py-3.5">
-                  <img
-                    src={QR_CODE_IMAGE}
-                    alt="QR Code"
+                  <button
                     onClick={() => handleQRClick(batch)}
-                    className="w-12 h-12 cursor-pointer hover:opacity-70 transition-opacity"
+                    className="p-0 border-0 bg-transparent cursor-pointer"
                     title="Click to view full QR Code"
-                  />
+                    aria-label={`View QR code for batch ${batch.id}`}
+                  >
+                    <img
+                      src={QR_CODE_IMAGE}
+                      alt="QR Code"
+                      className="w-12 h-12 hover:opacity-70 transition-opacity"
+                    />
+                  </button>
                 </td>
                 <td className="px-5 py-3.5 text-sm text-muted-foreground">{batch.lastUpdated}</td>
                 <td className="px-5 py-3.5">
