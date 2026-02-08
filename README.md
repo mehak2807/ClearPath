@@ -52,28 +52,24 @@ JWT_SECRET=your_secure_hash
 # 4. Launch
 npm start```
 ---
+### 2. Frontend Interface Configuration (The Multi-Portal UI)
+The frontend serves as the multi-role gateway for Administrators, Supply Chain Actors, and Consumers. It is designed for high performance, modularity, and real-time data visualization.
 
-2. Frontend Setup
-The frontend serves as the multi-role gateway for Administrators, Supply Chain Actors, and Consumers. It is designed for high performance and real-time data visualization.
+```bash
+# 1. Navigate to the frontend directory
+cd ../frontend
 
-* **Step 1: Navigate to the frontend directory**
-    ```bash
-    cd ../frontend
-    ```
-* **Step 2: Install UI dependencies**
-    *Includes Tailwind CSS for styling, Lucide-React for iconography, and Chart.js for live analytics.*
-    ```bash
-    npm install
-    ```
-* **Step 3: Launch the development environment**
-    ```bash
-    npm run dev
-    ```
-* **Step 4: Build for production** (Optional)
-    ```bash
-    npm run build
-    ```
+# 2. Install UI & State Management dependencies
+# Includes Tailwind CSS for styling, Lucide-React for icons, and Chart.js for analytics
+npm install
 
+# 3. Configure API Endpoints
+# Ensure your frontend environment is pointing to the active backend port
+# Default: http://localhost:5001
+
+# 4. Launch the development environment
+npm run dev
+    
 ---
 🛡 Security & Verification Workflow
 
