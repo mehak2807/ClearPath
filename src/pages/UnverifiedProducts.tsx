@@ -9,13 +9,15 @@ import {
   ArrowRight,
   CheckCircle2,
 } from "lucide-react";
-import { batches, Batch } from "@/data/mockData";
+import { Batch } from "@/data/mockData";
+import { useBatches } from "@/context/BatchContext";
 
 const UnverifiedProducts = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const selectedCompany = location.state?.company;
   const [selectedProduct, setSelectedProduct] = useState<Batch | null>(null);
+  const { batches } = useBatches();
 
   // Redirect to company selection if no company is selected
   useEffect(() => {

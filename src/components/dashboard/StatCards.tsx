@@ -2,27 +2,42 @@ import { Package, Users, ShieldCheck, Activity } from "lucide-react";
 import { LineChart, Line, ResponsiveContainer } from "recharts";
 import { activityData } from "@/data/mockData";
 import { motion } from "framer-motion";
-
-const cards = [
-  {
-    title: "Total Batches",
-    value: "1,247",
-    change: "+12 this week",
-    icon: Package,
-    color: "text-primary",
-    bgColor: "bg-primary/10",
-  },
-  {
-    title: "Active Actors",
-    value: "89",
-    change: "Across 6 regions",
-    icon: Users,
-    color: "text-accent",
-    bgColor: "bg-accent/10",
-  },
-];
+import { useBatches } from "@/context/BatchContext";
 
 const StatCards = () => {
+  const { batches } = useBatches();
+  
+  // Calculate total batches dynamically
+  const totalBatches = batches.length;
+  
+  // Calculate active actors from unique actors in journey events
+  const uniqueActors = new Set<string>();
+  batches.forEach(batch => {
+    batch.journey.forEach(event => {
+      uniqueActors.add(event.actor.id);
+    });
+  });
+  const activeActors = uniqueActors.size;
+  
+  const cards = [
+    {
+      title: "Total Batches",
+      value: totalBatches.toString(),
+      change: "Dynamic count",
+      icon: Package,
+      color: "text-primary",
+      bgColor: "bg-primary/10",
+    },
+    {
+      title: "Active Actors",
+      value: activeActors.toString(),
+      change: "Unique verified actors",
+      icon: Users,
+      color: "text-accent",
+      bgColor: "bg-accent/10",
+    },
+  ];
+  
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
       {cards.map((card, i) => (

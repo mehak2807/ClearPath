@@ -16,38 +16,41 @@ import VerifiedActorOnboarding from "./pages/VerifiedActorOnboarding";
 import CompanyOnboarding from "./pages/CompanyOnboarding";
 import VerifiedActorDashboard from "./pages/VerifiedActorDashboard";
 import UnverifiedProducts from "./pages/UnverifiedProducts";
+import { BatchProvider } from "./context/BatchContext";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          {/* Homepage - no layout */}
-          <Route path="/home" element={<HomePage />} />
-          <Route path="/" element={<Navigate to="/home" replace />} />
-          
-          {/* All other routes use DashboardLayout with role-based sidebar */}
-          <Route element={<DashboardLayout />}>
-            <Route path="/dashboard" element={<Index />} />
-            <Route path="/inventory" element={<Inventory />} />
-            <Route path="/actors" element={<Actors />} />
-            <Route path="/erp" element={<ERPConnect />} />
-            <Route path="/verify" element={<QRVerify />} />
-            <Route path="/settings" element={<SettingsPage />} />
-            <Route path="/verified-actor-onboarding" element={<VerifiedActorOnboarding />} />
-            <Route path="/company-onboarding" element={<CompanyOnboarding />} />
-            <Route path="/verified-actor-dashboard" element={<VerifiedActorDashboard />} />
-            <Route path="/unverified-products" element={<UnverifiedProducts />} />
-          </Route>
-          
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
+    <BatchProvider>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
+            {/* Homepage - no layout */}
+            <Route path="/home" element={<HomePage />} />
+            <Route path="/" element={<Navigate to="/home" replace />} />
+            
+            {/* All other routes use DashboardLayout with role-based sidebar */}
+            <Route element={<DashboardLayout />}>
+              <Route path="/dashboard" element={<Index />} />
+              <Route path="/inventory" element={<Inventory />} />
+              <Route path="/actors" element={<Actors />} />
+              <Route path="/erp" element={<ERPConnect />} />
+              <Route path="/verify" element={<QRVerify />} />
+              <Route path="/settings" element={<SettingsPage />} />
+              <Route path="/verified-actor-onboarding" element={<VerifiedActorOnboarding />} />
+              <Route path="/company-onboarding" element={<CompanyOnboarding />} />
+              <Route path="/verified-actor-dashboard" element={<VerifiedActorDashboard />} />
+              <Route path="/unverified-products" element={<UnverifiedProducts />} />
+            </Route>
+            
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
+    </BatchProvider>
   </QueryClientProvider>
 );
 
