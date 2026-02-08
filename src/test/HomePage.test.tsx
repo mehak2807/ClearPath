@@ -36,25 +36,26 @@ describe("HomePage", () => {
     ).toBeInTheDocument();
   });
 
-  it("should render all three role cards", () => {
+  it("should render both role cards", () => {
     renderHomePage();
-    expect(screen.getByText("Consumer")).toBeInTheDocument();
     expect(screen.getByText("Verified Actor")).toBeInTheDocument();
     expect(screen.getByText("Company")).toBeInTheDocument();
   });
 
+  it("should render exactly two role cards", () => {
+    renderHomePage();
+    const roleButtons = screen.getAllByRole("button", { name: /Enter as/i });
+    expect(roleButtons).toHaveLength(2);
+  });
+
   it("should render card descriptions and buttons", () => {
     renderHomePage();
-    expect(
-      screen.getByText(/Scan QR codes to verify product authenticity/)
-    ).toBeInTheDocument();
     expect(
       screen.getByText(/Connect your ERP system and seal supply chain data/)
     ).toBeInTheDocument();
     expect(
       screen.getByText(/View all verified supply chain participants/)
     ).toBeInTheDocument();
-    expect(screen.getByText("Enter as Consumer")).toBeInTheDocument();
     expect(screen.getByText("Enter as Actor")).toBeInTheDocument();
     expect(screen.getByText("Enter as Company")).toBeInTheDocument();
   });

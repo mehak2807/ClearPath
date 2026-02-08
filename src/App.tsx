@@ -38,7 +38,8 @@ const App = () => (
               <Route path="/inventory" element={<Inventory />} />
               <Route path="/actors" element={<Actors />} />
               <Route path="/erp" element={<ERPConnect />} />
-              <Route path="/verify" element={<QRVerify />} />
+              {/* Consumer role removed - QR verification route disabled */}
+              {/* <Route path="/verify" element={<QRVerify />} /> */}
               <Route path="/settings" element={<SettingsPage />} />
               <Route path="/verified-actor-onboarding" element={<VerifiedActorOnboarding />} />
               <Route path="/company-onboarding" element={<CompanyOnboarding />} />
