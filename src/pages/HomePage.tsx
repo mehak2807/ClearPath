@@ -9,23 +9,13 @@ interface RoleCard {
   description: string;
   icon: typeof QrCode;
   path: string;
-  role: 'consumer' | 'actor' | 'company';
+  role: 'actor' | 'company';
   buttonText: string;
   colorClass: string;
   bgColorClass: string;
 }
 
 const roleCards: RoleCard[] = [
-  {
-    title: "Consumer",
-    description: "Scan QR codes to verify product authenticity and trace supply chain journey",
-    icon: QrCode,
-    path: "/verify",
-    role: "consumer",
-    buttonText: "Enter as Consumer",
-    colorClass: "text-primary",
-    bgColorClass: "bg-primary/15",
-  },
   {
     title: "Verified Actor",
     description: "Connect your ERP system and seal supply chain data into ClearPath ledger",
@@ -52,7 +42,7 @@ const HomePage = () => {
   const navigate = useNavigate();
   const { setUserRole } = useUserRole();
 
-  const handleRoleSelect = (role: 'consumer' | 'actor' | 'company', path: string) => {
+  const handleRoleSelect = (role: 'actor' | 'company', path: string) => {
     setUserRole(role);
     navigate(path);
   };

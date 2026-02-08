@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 
-export type UserRole = 'consumer' | 'actor' | 'company' | null;
+export type UserRole = 'actor' | 'company' | null;
 
 interface UserRoleContextType {
   userRole: UserRole;
@@ -17,7 +17,7 @@ export const UserRoleProvider = ({ children }: { children: ReactNode }) => {
     // Load from localStorage on initialization
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
-      if (stored && ['consumer', 'actor', 'company'].includes(stored)) {
+      if (stored && ['actor', 'company'].includes(stored)) {
         return stored as UserRole;
       }
     } catch (error) {

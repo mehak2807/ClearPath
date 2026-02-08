@@ -15,7 +15,6 @@ const allNavItems: NavItem[] = [
   { label: "Verified Actors", icon: ShieldCheck, path: "/actors", roles: ["company"] },
   { label: "My Companies", icon: Building2, path: "/verified-actor-dashboard", roles: ["actor"] },
   { label: "ERP Connect", icon: Plug, path: "/erp", roles: ["actor"] },
-  { label: "QR Verify", icon: QrCode, path: "/verify", roles: ["consumer"] },
   { label: "Settings", icon: Settings, path: "/settings", roles: ["actor", "company"] },
 ];
 

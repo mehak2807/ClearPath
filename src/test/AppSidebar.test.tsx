@@ -47,20 +47,5 @@ describe("AppSidebar Navigation Filtering", () => {
     expect(screen.queryByText("Dashboard")).not.toBeInTheDocument();
     expect(screen.queryByText("Inventory")).not.toBeInTheDocument();
     expect(screen.queryByText("Verified Actors")).not.toBeInTheDocument();
-    expect(screen.queryByText("QR Verify")).not.toBeInTheDocument();
-  });
-
-  it("should show QR Verify for consumer role", () => {
-    renderWithProviders(<AppSidebar />, "consumer");
-    
-    // Consumer role should only see QR Verify
-    expect(screen.getByText("QR Verify")).toBeInTheDocument();
-    
-    // Consumer role should NOT see other items
-    expect(screen.queryByText("Dashboard")).not.toBeInTheDocument();
-    expect(screen.queryByText("Inventory")).not.toBeInTheDocument();
-    expect(screen.queryByText("Verified Actors")).not.toBeInTheDocument();
-    expect(screen.queryByText("ERP Connect")).not.toBeInTheDocument();
-    expect(screen.queryByText("Settings")).not.toBeInTheDocument();
   });
 });

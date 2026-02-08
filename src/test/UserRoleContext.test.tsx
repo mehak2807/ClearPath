@@ -10,7 +10,6 @@ const TestComponent = () => {
   return (
     <div>
       <div data-testid="current-role">{userRole || "none"}</div>
-      <button onClick={() => setUserRole("consumer")}>Set Consumer</button>
       <button onClick={() => setUserRole("actor")}>Set Actor</button>
       <button onClick={() => setUserRole("company")}>Set Company</button>
       <button onClick={() => clearUserRole()}>Clear Role</button>
@@ -33,12 +32,6 @@ describe("UserRoleContext", () => {
     expect(screen.getByTestId("current-role")).toHaveTextContent("none");
   });
 
-  it("should set consumer role", () => {
-    renderWithProvider(<TestComponent />);
-    fireEvent.click(screen.getByText("Set Consumer"));
-    expect(screen.getByTestId("current-role")).toHaveTextContent("consumer");
-  });
-
   it("should set actor role", () => {
     renderWithProvider(<TestComponent />);
     fireEvent.click(screen.getByText("Set Actor"));
@@ -53,8 +46,8 @@ describe("UserRoleContext", () => {
 
   it("should clear role", () => {
     renderWithProvider(<TestComponent />);
-    fireEvent.click(screen.getByText("Set Consumer"));
-    expect(screen.getByTestId("current-role")).toHaveTextContent("consumer");
+    fireEvent.click(screen.getByText("Set Actor"));
+    expect(screen.getByTestId("current-role")).toHaveTextContent("actor");
     fireEvent.click(screen.getByText("Clear Role"));
     expect(screen.getByTestId("current-role")).toHaveTextContent("none");
   });
@@ -73,8 +66,8 @@ describe("UserRoleContext", () => {
 
   it("should remove from localStorage when cleared", () => {
     renderWithProvider(<TestComponent />);
-    fireEvent.click(screen.getByText("Set Consumer"));
-    expect(localStorage.getItem("clearpath-user-role")).toBe("consumer");
+    fireEvent.click(screen.getByText("Set Actor"));
+    expect(localStorage.getItem("clearpath-user-role")).toBe("actor");
     fireEvent.click(screen.getByText("Clear Role"));
     expect(localStorage.getItem("clearpath-user-role")).toBeNull();
   });
