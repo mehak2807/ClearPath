@@ -9,7 +9,7 @@ interface QRCodeModalProps {
 }
 
 // Base URL for verification - can be configured per environment
-const VERIFICATION_BASE_URL = import.meta.env.VITE_VERIFICATION_URL || "https://clearpath.app/verify";
+const VERIFICATION_BASE_URL = import.meta.env.VITE_VERIFICATION_URL || "https://qr-ruddy-chi.vercel.app/verify";
 
 const QRCodeModal = ({ batch, onClose }: QRCodeModalProps) => {
   if (!batch) return null;
