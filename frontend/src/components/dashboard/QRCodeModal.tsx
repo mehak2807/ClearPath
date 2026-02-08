@@ -9,13 +9,13 @@ interface QRCodeModalProps {
 }
 
 // Base URL for verification - can be configured per environment
-const VERIFICATION_BASE_URL = import.meta.env.VITE_VERIFICATION_URL || "https://qr-ruddy-chi.vercel.app/verify";
+const VERIFICATION_BASE_URL = import.meta.env.VITE_VERIFICATION_URL || "https://qr-ruddy-chi.vercel.app";
 
 const QRCodeModal = ({ batch, onClose }: QRCodeModalProps) => {
   if (!batch) return null;
 
-  // Generate verification URL for the batch
-  const verificationUrl = `${VERIFICATION_BASE_URL}/${batch.id}`;
+  // Generate verification URL - redirect to homepage
+  const verificationUrl = VERIFICATION_BASE_URL;
 
   return (
     <AnimatePresence>

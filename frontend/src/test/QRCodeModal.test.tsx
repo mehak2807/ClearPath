@@ -39,8 +39,8 @@ describe("QRCodeModal", () => {
     const qrCode = screen.getByTestId("qr-code");
     const qrValue = qrCode.getAttribute("data-value");
     
-    // Verify the URL uses the new base URL
-    expect(qrValue).toBe("https://qr-ruddy-chi.vercel.app/verify/BATCH-001");
+    // Verify the URL uses the new base URL (homepage only, no batch ID)
+    expect(qrValue).toBe("https://qr-ruddy-chi.vercel.app");
   });
 
   it("should display batch information correctly", () => {
@@ -53,7 +53,7 @@ describe("QRCodeModal", () => {
   it("should display the verification URL in the modal", () => {
     render(<QRCodeModal batch={mockBatch} onClose={mockOnClose} />);
     
-    expect(screen.getByText("https://qr-ruddy-chi.vercel.app/verify/BATCH-001")).toBeInTheDocument();
+    expect(screen.getByText("https://qr-ruddy-chi.vercel.app")).toBeInTheDocument();
   });
 
   it("should not render when batch is null", () => {
@@ -71,7 +71,8 @@ describe("QRCodeModal", () => {
     const { rerender } = render(<QRCodeModal batch={batch2} onClose={mockOnClose} />);
     
     let qrCode = screen.getByTestId("qr-code");
-    expect(qrCode.getAttribute("data-value")).toBe("https://qr-ruddy-chi.vercel.app/verify/BATCH-999");
+    // All batches now use the same homepage URL
+    expect(qrCode.getAttribute("data-value")).toBe("https://qr-ruddy-chi.vercel.app");
 
     const batch3: Batch = {
       ...mockBatch,
@@ -81,6 +82,7 @@ describe("QRCodeModal", () => {
     rerender(<QRCodeModal batch={batch3} onClose={mockOnClose} />);
     
     qrCode = screen.getByTestId("qr-code");
-    expect(qrCode.getAttribute("data-value")).toBe("https://qr-ruddy-chi.vercel.app/verify/BATCH-ABC123");
+    // All batches now use the same homepage URL
+    expect(qrCode.getAttribute("data-value")).toBe("https://qr-ruddy-chi.vercel.app");
   });
 });
