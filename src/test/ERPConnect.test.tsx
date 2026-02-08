@@ -14,7 +14,7 @@ vi.mock("framer-motion", () => ({
   AnimatePresence: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }));
 
-const renderWithProviders = (component: React.ReactElement, state?: unknown) => {
+const renderWithProviders = (component: React.ReactElement) => {
   return render(
     <BrowserRouter>
       <BatchProvider>{component}</BatchProvider>
@@ -28,12 +28,7 @@ describe("ERPConnect", () => {
   });
 
   it("should have status dropdown with correct In-Transit value", () => {
-    const selectedProduct = batches[9]; // Harvested batch
-    
-    renderWithProviders(
-      <ERPConnect />,
-      { state: { product: selectedProduct } }
-    );
+    renderWithProviders(<ERPConnect />);
 
     // Check if the component renders (it will redirect if no product)
     // Since we can't easily pass location state in test, we'll check the dropdown exists
@@ -51,12 +46,7 @@ describe("ERPConnect", () => {
   });
 
   it("should have all required status options", () => {
-    const selectedProduct = batches[9];
-    
-    renderWithProviders(
-      <ERPConnect />,
-      { state: { product: selectedProduct } }
-    );
+    renderWithProviders(<ERPConnect />);
 
     const statusSelects = screen.queryAllByRole("combobox");
     
@@ -64,11 +54,11 @@ describe("ERPConnect", () => {
       const statusSelect = statusSelects[0];
       
       // Check all options exist with correct values
-      expect(statusSelect.querySelector('option[value="Manufactured"]')).toBeTruthy();
       expect(statusSelect.querySelector('option[value="Harvested"]')).toBeTruthy();
       expect(statusSelect.querySelector('option[value="In-Transit"]')).toBeTruthy();
       expect(statusSelect.querySelector('option[value="Processed"]')).toBeTruthy();
       expect(statusSelect.querySelector('option[value="Delivered"]')).toBeTruthy();
+      expect(statusSelect.querySelector('option[value="Verified"]')).toBeTruthy();
     }
   });
 

@@ -30,7 +30,7 @@ const ERPConnect = () => {
   const [showSuccess, setShowSuccess] = useState(false);
 
   // Product details state
-  const [productStatus, setProductStatus] = useState<string>("Manufactured");
+  const [productStatus, setProductStatus] = useState<string>("Harvested");
   const [productQuantity, setProductQuantity] = useState<string>("");
   const [productLocation, setProductLocation] = useState<string>("");
   // Truncate ISO string to 'YYYY-MM-DDTHH:mm' format for datetime-local input
@@ -140,7 +140,7 @@ const ERPConnect = () => {
       
       // Update batch status in BatchContext
       updateBatch(selectedProduct.id, { 
-        status: productStatus as "Harvested" | "In-Transit" | "Processed" | "Delivered" | "Verified",
+        status: productStatus as Batch['status'],
         lastUpdated: new Date().toISOString().split('T')[0],
       });
       
@@ -219,11 +219,11 @@ const ERPConnect = () => {
               onChange={(e) => setProductStatus(e.target.value)}
               className="w-full px-4 py-2.5 rounded-lg bg-muted border border-border text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/30"
             >
-              <option value="Manufactured">Manufactured</option>
               <option value="Harvested">Harvested</option>
               <option value="In-Transit">In Transit</option>
               <option value="Processed">Processed</option>
               <option value="Delivered">Delivered</option>
+              <option value="Verified">Verified</option>
             </select>
           </div>
 
