@@ -1,73 +1,56 @@
-# 🚀 ClearPath: Integrated Supply Chain Traceability & Transparency Platform
+# 🚀 ClearPath: Digital Product Passport & Traceability System
 
-[cite_start]ClearPath is a secure, end-to-end supply chain transparency solution designed to create a **Digital Product Passport**[cite: 42, 154]. [cite_start]By leveraging cryptographic verification, we ensure that every stage of a product's journey—from raw material harvesting to retail shelving—is immutable, transparent, and tamper-proof[cite: 60, 141].
+ClearPath is a next-generation supply chain transparency platform that creates a **Digital Product Passport** for every item. By integrating cryptographic signatures with a "Zero Trust" backend, we ensure that a product's journey—from origin to retail—is 100% verified, immutable, and tamper-proof.
 
 ---
 
 ## 🏗 System Architecture
 
-### 1. Backend: The Trust & Verification Engine
-[cite_start]The backend operates on a **Zero Trust Architecture**, ensuring no data is committed to the ledger without multi-factor actor verification[cite: 71, 142].
-- [cite_start]**Identity Verification:** Actors are onboarded via **OTP-based phone verification** and **Identity Document upload** to ensure accountability[cite: 54, 205].
-- [cite_start]**Cryptographic Foundations:** Upon successful verification, the system generates a unique **Public-Private Key pair** for each actor, serving as their permanent digital seal[cite: 224, 226].
-- [cite_start]**Data Integrity (Hashing):** Every supply chain event (e.g., Harvesting, Quality Sorting, Roasting) is processed into a **SHA-256 hash**, creating a unique, irreversible digital fingerprint[cite: 135, 243].
-- **Digital Signatures:** Actors "seal" their data using their Private Key via **ECDSA signatures**. [cite_start]This ensures **Non-repudiation**, meaning an actor cannot later deny their involvement in a specific batch update[cite: 136, 244, 245].
-- [cite_start]**Immutable Ledger:** The system utilizes an append-only database logic where records can never be deleted or altered, providing a reliable audit trail for regulators[cite: 157, 158, 250].
+### 1. The Trust Engine (Backend)
+Our backend doesn't just store data; it validates the **integrity** of every actor and event.
+* **Zero Trust Onboarding:** Actors are verified via **Phone OTP** and **ID Document verification** before they can interact with the system.
+* **Cryptographic Identity:** Upon verification, each actor is issued a unique **Public-Private Key pair**. This acts as their permanent "Digital Seal."
+* **Data Integrity (SHA-256):** Every event (Harvest, Transport, Quality Check) is hashed into a unique digital fingerprint. If even one letter of the data is changed, the hash breaks, alerting the system of tampering.
+* **Non-Repudiation:** Actors sign data using **ECDSA signatures**. Because only they hold their private key, they cannot later deny their involvement in a specific batch update.
+* **Immutable Ledger:** We use an append-only logic where records can never be deleted, providing a "single source of truth" for regulators and brands.
 
-### 2. Frontend: Multi-Role Experience Portals
-- [cite_start]**Brand Admin Dashboard:** A centralized interface for companies to monitor real-time batch movements, active users, and global security status[cite: 260, 270].
-- [cite_start]**Actor Portal (ERP Bridge):** A "Digital Twin" simulation showing how legacy ERP systems (SAP/Oracle) securely push data into the ClearPath ledger through a verified gateway[cite: 97, 236].
-- [cite_start]**Consumer Mobile Interface:** A mobile-optimized view triggered by QR scans, displaying a **12-node collapsible timeline** of the product's journey from Origin to Retail[cite: 46, 169].
+### 2. The Experience Portals (Frontend)
+* **Company Dashboard:** A command center for brands to monitor real-time batch movements, active stakeholders, and system-wide security alerts.
+* **Actor Portal (ERP Bridge):** A "Digital Twin" interface that simulates how existing systems (like SAP or Oracle) securely bridge data into our verified ledger.
+* **Consumer QR Interface:** A mobile-optimized **12-node journey timeline** that reveals the verified story of the product to the end-user.
 
 ---
 
 ## 🛠 Tech Stack
-- **Frontend:** React.js, Tailwind CSS (v3), Lucide-React (Icons), Chart.js (Analytics).
-- [cite_start]**Backend:** Node.js, Express.js, MongoDB[cite: 278, 281].
-- [cite_start]**Security:** SHA-256 Hashing, ECDSA Digital Signatures, JWT Authentication[cite: 232, 236, 243].
 
----
+| Layer | Technology |
+| :--- | :--- |
+| **Frontend** | React.js, Tailwind CSS, Lucide-React, Chart.js |
+| **Backend** | Node.js, Express.js, MongoDB |
+| **Security** | SHA-256 Hashing, ECDSA Digital Signatures, JWT Auth |
 
-## 📂 Project Structure
-```text
-/ClearPath
-├── /frontend           # React + Tailwind UI components
-│   ├── /src/components  # Dashboard, Actor Portal, and QR Views
-│   └── tailwind.config.ts
-├── /backend            # Node.js + Express Logic
-│   ├── /src/models      # Mongoose schemas for Actors, Products, and Events
-│   ├── /src/controllers # Logic for Auth, OTP, and Data Sealing
-│   ├── /src/utils       # Hashing and Cryptographic utilities
-│   └── server.js        # Main entry point
-└── README.md
 ---
 
 ## 🚀 Installation & Setup
 
-Follow these steps to configure the development environment for both the backend and frontend tiers.
+### 1. Backend Setup
+The backend handles the database and cryptographic logic. Configure this first.
 
-### 1. Backend Environment Configuration
-The backend serves as the "Trust Engine." It must be configured first to establish database connectivity and cryptographic services.
+```bash
+# 1. Enter the directory
+cd backend
 
-* **Step 1: Navigate to the backend directory**
-    ```bash
-    cd backend
-    ```
-* **Step 2: Install core dependencies**
-    ```bash
-    npm install
-    ```
-* **Step 3: Configure Environment Variables**
-    Create a `.env` file in the root of the `/backend` folder. This file stores sensitive credentials and is excluded from version control for security:
-    ```env
-    PORT=5001
-    MONGO_URI=your_mongodb_connection_string
-    JWT_SECRET=your_secure_random_hash_string
-    ```
-* **Step 4: Launch the server**
-    ```bash
-    npm start
-    ```
+# 2. Install dependencies
+npm install
+
+# 3. Setup Environment Variables
+# Create a .env file in the /backend folder:
+PORT=5001
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_secure_hash
+
+# 4. Launch
+npm start
 
 ### 2. Frontend Interface Configuration
 The frontend handles the specialized portals for Administrators, Supply Chain Actors, and Consumers.
