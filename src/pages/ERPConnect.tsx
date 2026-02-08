@@ -117,7 +117,7 @@ const ERPConnect = () => {
       
       // Determine section based on product status
       let section: "origin" | "transit" | "final" = "origin";
-      if (productStatus === "In Transit" || productStatus === "Processed") {
+      if (productStatus === "In-Transit" || productStatus === "Processed") {
         section = "transit";
       } else if (productStatus === "Delivered") {
         section = "final";
@@ -138,20 +138,23 @@ const ERPConnect = () => {
       // Add the journey event to the batch
       addJourneyEvent(selectedProduct.id, newEvent);
       
-      // Update batch status if it's currently "Harvested" and we're adding a new event
-      if (selectedProduct.status === "Harvested" && productStatus !== "Harvested") {
-        updateBatch(selectedProduct.id, { 
-          status: productStatus as Batch['status']
-        });
-      }
+      // Update batch status in BatchContext
+      updateBatch(selectedProduct.id, { 
+        status: productStatus as "Harvested" | "In-Transit" | "Processed" | "Delivered" | "Verified",
+        lastUpdated: new Date().toISOString().split('T')[0],
+      });
+      
+      console.log("Batch updated:", {
+        batchId: selectedProduct.id,
+        status: productStatus,
+        quantity: productQuantity,
+        location: productLocation,
+        timestamp: productTimestamp,
+      });
     }
     
     setShowSuccess(true);
-    
-    // Navigate back to dashboard after 2 seconds
-    setTimeout(() => {
-      navigate("/dashboard");
-    }, 2000);
+    // NO NAVIGATION - just stay on success screen
   };
 
   const statusStyles: Record<string, string> = {
@@ -218,7 +221,7 @@ const ERPConnect = () => {
             >
               <option value="Manufactured">Manufactured</option>
               <option value="Harvested">Harvested</option>
-              <option value="In Transit">In Transit</option>
+              <option value="In-Transit">In Transit</option>
               <option value="Processed">Processed</option>
               <option value="Delivered">Delivered</option>
             </select>
